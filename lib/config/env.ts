@@ -1,0 +1,46 @@
+// Single, typed entry point for every environment variable the app reads.
+// Components/routes should import `env` from here instead of touching
+// process.env directly, so there is exactly one place that documents what
+// exists and what it's for (see .env.local.example / SETUP.md for values).
+
+function readPublic(name: string, fallback: string): string {
+  const value = process.env[name];
+  return value && value.length > 0 ? value : fallback;
+}
+
+export const env = {
+  // Supabase
+  supabaseUrl: process.env.NEXT_PUBLIC_SUPABASE_URL ?? "",
+  supabaseAnonKey: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? "",
+  // Server-only. Not used by any route in v1 — reserved for a future
+  // authenticated admin dashboard. Never import this into a "use client" file.
+  supabaseServiceRoleKey: process.env.SUPABASE_SERVICE_ROLE_KEY ?? "",
+
+  // Contact / external links (public — safe to ship to the browser)
+  whatsappNumber: readPublic("NEXT_PUBLIC_WHATSAPP_NUMBER", "917200001934"),
+  shaashStoreUrl: readPublic(
+    "NEXT_PUBLIC_SHAASH_STORE_URL",
+    "https://shaash-extension.vercel.app/"
+  ),
+  instagramMain: readPublic(
+    "NEXT_PUBLIC_INSTAGRAM_MAIN",
+    "https://www.instagram.com/the_couple_artistry"
+  ),
+  instagramStore: readPublic(
+    "NEXT_PUBLIC_INSTAGRAM_STORE",
+    "https://www.instagram.com/shaash.beautystore"
+  ),
+  instagramStitching: readPublic(
+    "NEXT_PUBLIC_INSTAGRAM_STITCHING",
+    "https://www.instagram.com/shaash_bridal_designer_studio"
+  ),
+  googleReviewUrl: readPublic(
+    "NEXT_PUBLIC_GOOGLE_REVIEW_URL",
+    "https://share.google/EUAbcsd5vH12nTZO6"
+  ),
+  siteUrl: readPublic("NEXT_PUBLIC_SITE_URL", "https://couple-artistry-website.vercel.app"),
+} as const;
+
+export function isSupabaseConfigured(): boolean {
+  return env.supabaseUrl.length > 0 && env.supabaseAnonKey.length > 0;
+}
