@@ -62,10 +62,3 @@ export const COLOUR_ANALYSIS_PROCESS_STEPS = [
   { title: "Palette Guide", description: "You receive a personal colour guide to use for outfits, jewellery, and makeup." },
   { title: "Ongoing Reference", description: "Keep the guide as a reference for every future event, not just this one." },
 ];
-
-export const STITCHING_SERVICES = [
-  { title: "Blouse Designing & Stitching", description: "Custom blouse design and stitching to your measurements and reference." },
-  { title: "Skirt Stitching", description: "Made-to-measure skirt stitching for lehengas and ensembles." },
-  { title: "Lehenga Customization", description: "Alterations, resizing, and customization for your lehenga." },
-  { title: "Rework", description: "Repairs and rework on existing outfits, restored to fit and finish." },
-];

@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import { getGalleryImages } from "@/lib/config/gallery";
-import { STITCHING_VALUE_PROPS, STITCHING_SERVICES } from "@/lib/config/valueProps";
+import { STITCHING_VALUE_PROPS } from "@/lib/config/valueProps";
 import { STITCHING_INQUIRY_FIELDS } from "@/lib/config/inquiryFields";
 import { scrollFadeUpProps } from "@/lib/motion";
 import { SectionHeading } from "@/components/shared/SectionHeading";
@@ -40,17 +40,6 @@ export default function StitchingPageClient() {
         </div>
       </section>
 
-      <section className="bg-ivory-dark px-6 py-24 md:py-32">
-        <div className="mx-auto max-w-content">
-          <SectionHeading eyebrow="Services" title="What We Offer" />
-          <div className="mt-14">
-            <ValueProps items={STITCHING_SERVICES} columns={4} />
-          </div>
-        </div>
-      </section>
-
-      <PackageGrid categoryKey="stitching" title="Starting Prices" />
-
       <section className="px-6 py-24 md:py-32">
         <div className="mx-auto max-w-content">
           <SectionHeading eyebrow="Gallery" title="From the Studio" />
@@ -59,6 +48,8 @@ export default function StitchingPageClient() {
           </div>
         </div>
       </section>
+
+      <PackageGrid categoryKey="stitching" title="Starting Prices" />
 
       <section className="px-6 py-24 md:py-32">
         <div className="mx-auto max-w-content">
