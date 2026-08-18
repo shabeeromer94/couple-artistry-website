@@ -4,6 +4,7 @@ import type { PricingCategoryKey, PricingTier } from "@/types/pricing";
 import { getPricingCategory } from "@/lib/config/pricing";
 import { Package } from "./Package";
 import { SectionHeading } from "./SectionHeading";
+import { ScrollFadeSection } from "./ScrollFadeSection";
 import { PRICING_PLACEHOLDER_CAPTION } from "@/lib/config/copy";
 
 interface PackageGridProps {
@@ -19,7 +20,7 @@ export function PackageGrid({ categoryKey, onSelectTier, title }: PackageGridPro
   const hasPlaceholderPricing = category.tiers.some((tier) => tier.isPlaceholderPrice);
 
   return (
-    <section className="py-24 md:py-32">
+    <ScrollFadeSection className="py-24 md:py-32">
       <div className="mx-auto max-w-content px-6">
         <SectionHeading
           eyebrow="Packages"
@@ -37,6 +38,6 @@ export function PackageGrid({ categoryKey, onSelectTier, title }: PackageGridPro
           ))}
         </div>
       </div>
-    </section>
+    </ScrollFadeSection>
   );
 }

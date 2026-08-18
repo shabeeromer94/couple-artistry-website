@@ -3,10 +3,11 @@
 import { motion } from "framer-motion";
 import { scrollFadeUpProps } from "@/lib/motion";
 import { PlaceholderTile } from "@/components/shared/PlaceholderTile";
+import { ScrollFadeSection } from "@/components/shared/ScrollFadeSection";
 
 export function WhatIsColourAnalysis() {
   return (
-    <section className="py-24 md:py-32">
+    <ScrollFadeSection className="py-24 md:py-32">
       <div className="mx-auto grid max-w-content grid-cols-1 items-center gap-12 px-6 md:grid-cols-2">
         <motion.div {...scrollFadeUpProps}>
           <p className="mb-3 text-xs uppercase tracking-[0.25em] text-rose-dark">What Is It</p>
@@ -27,6 +28,6 @@ export function WhatIsColourAnalysis() {
           <PlaceholderTile label="Colour Draping" />
         </motion.div>
       </div>
-    </section>
+    </ScrollFadeSection>
   );
 }

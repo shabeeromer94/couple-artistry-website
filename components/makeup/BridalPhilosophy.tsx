@@ -3,10 +3,11 @@
 import { motion } from "framer-motion";
 import { scrollFadeUpProps } from "@/lib/motion";
 import { PlaceholderTile } from "@/components/shared/PlaceholderTile";
+import { ScrollFadeSection } from "@/components/shared/ScrollFadeSection";
 
 export function BridalPhilosophy() {
   return (
-    <section className="py-24 md:py-32">
+    <ScrollFadeSection className="py-24 md:py-32">
       <div className="mx-auto grid max-w-content grid-cols-1 items-center gap-12 px-6 md:grid-cols-2">
         <motion.div {...scrollFadeUpProps} className="aspect-[4/5] w-full overflow-hidden">
           <PlaceholderTile label="Ashi & Shabeer" />
@@ -36,6 +37,6 @@ export function BridalPhilosophy() {
           </blockquote>
         </motion.div>
       </div>
-    </section>
+    </ScrollFadeSection>
   );
 }

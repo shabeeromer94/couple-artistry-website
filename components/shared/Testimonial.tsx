@@ -1,19 +1,54 @@
-import type { Testimonial as TestimonialType } from "@/types/testimonial";
+"use client";
 
-export function Testimonial({ testimonial }: { testimonial: TestimonialType }) {
+import { motion } from "framer-motion";
+import type { Testimonial as TestimonialType } from "@/types/testimonial";
+import { EASE_EDITORIAL } from "@/lib/motion";
+import { cn } from "@/lib/utils/cn";
+
+// Two alternating tints so neighbouring bubbles read as distinct "messages"
+// rather than one repeated card.
+const TINTS = ["bg-ivory-dark", "bg-rose-light/25"];
+
+interface TestimonialProps {
+  testimonial: TestimonialType;
+  index?: number;
+}
+
+/**
+ * A testimonial rendered as a speech bubble — rounded card with a small
+ * tail pointing down, alternating left/right and slightly offset by index
+ * so a row of them reads as an organic conversation rather than a rigid
+ * grid. Slides in from the side its tail points to.
+ */
+export function Testimonial({ testimonial, index = 0 }: TestimonialProps) {
+  const tailLeft = index % 2 === 0;
+  const tint = TINTS[index % TINTS.length];
+
   return (
-    <figure className="flex h-full flex-col justify-between border border-charcoal/10 bg-ivory p-8">
-      <blockquote className="font-display text-lg leading-relaxed text-charcoal">
-        “{testimonial.quote}”
-      </blockquote>
-      <figcaption className="mt-6 text-xs uppercase tracking-[0.15em] text-charcoal-light">
-        {testimonial.authorName}
-        {testimonial.rating && (
-          <span className="ml-2 text-rose" aria-label={`${testimonial.rating} out of 5`}>
-            {"★".repeat(testimonial.rating)}
-          </span>
-        )}
-      </figcaption>
-    </figure>
+    <motion.div
+      initial={{ opacity: 0, x: tailLeft ? -28 : 28, y: 16 }}
+      whileInView={{ opacity: 1, x: 0, y: 0 }}
+      viewport={{ once: true, margin: "-10% 0px" }}
+      transition={{ duration: 0.8, ease: EASE_EDITORIAL }}
+      className={cn("relative", index % 2 === 1 && "md:mt-10")}
+    >
+      <figure className={cn("relative rounded-[28px] p-7", tint)}>
+        <blockquote className="font-display text-lg leading-relaxed text-charcoal">
+          &ldquo;{testimonial.quote}&rdquo;
+        </blockquote>
+        <figcaption className="mt-6 text-xs uppercase tracking-[0.15em] text-charcoal-light">
+          {testimonial.authorName}
+          {testimonial.rating && (
+            <span className="ml-2 text-rose" aria-label={`${testimonial.rating} out of 5`}>
+              {"★".repeat(testimonial.rating)}
+            </span>
+          )}
+        </figcaption>
+        <span
+          aria-hidden="true"
+          className={cn("absolute -bottom-2 h-4 w-4 rotate-45", tint, tailLeft ? "left-8" : "right-8")}
+        />
+      </figure>
+    </motion.div>
   );
 }

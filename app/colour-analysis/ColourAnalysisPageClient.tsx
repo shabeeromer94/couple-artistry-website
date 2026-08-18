@@ -10,6 +10,7 @@ import { SectionHeading } from "@/components/shared/SectionHeading";
 import { ValueProps } from "@/components/shared/ValueProps";
 import { Steps } from "@/components/shared/Steps";
 import { Gallery } from "@/components/shared/Gallery";
+import { ScrollFadeSection } from "@/components/shared/ScrollFadeSection";
 import { PackageGrid } from "@/components/shared/PackageGrid";
 import { InquiryForm } from "@/components/shared/InquiryForm";
 import { WhatsAppButton } from "@/components/shared/WhatsAppButton";
@@ -21,7 +22,7 @@ export default function ColourAnalysisPageClient() {
 
   return (
     <main>
-      <section className="px-6 pb-16 pt-20 text-center md:pb-24 md:pt-28">
+      <ScrollFadeSection className="px-6 pb-16 pt-20 text-center md:pb-24 md:pt-28">
         <motion.p {...scrollFadeUpProps} className="text-xs uppercase tracking-[0.3em] text-rose-dark">
           Colour Analysis
         </motion.p>
@@ -35,40 +36,40 @@ export default function ColourAnalysisPageClient() {
           A guided session to identify the colours that work naturally in your favour — and translate
           them directly into your event.
         </motion.p>
-      </section>
+      </ScrollFadeSection>
 
       <WhatIsColourAnalysis />
 
-      <section className="px-6 py-24 md:py-32">
+      <ScrollFadeSection className="px-6 py-24 md:py-32">
         <div className="mx-auto max-w-content">
           <SectionHeading eyebrow="Why Choose Us" title="Why a Guided Analysis" />
           <div className="mt-14">
             <ValueProps items={COLOUR_ANALYSIS_VALUE_PROPS} columns={3} />
           </div>
         </div>
-      </section>
+      </ScrollFadeSection>
 
-      <section className="px-6 py-24 md:py-32">
+      <ScrollFadeSection className="px-6 py-24 md:py-32">
         <div className="mx-auto max-w-content">
           <SectionHeading eyebrow="Gallery" title="From Our Sessions" />
           <div className="mt-14">
             <Gallery images={getGalleryImages("colour-analysis")} />
           </div>
         </div>
-      </section>
+      </ScrollFadeSection>
 
-      <section className="bg-ivory-dark px-6 py-24 md:py-32">
+      <ScrollFadeSection className="bg-ivory-dark px-6 py-24 md:py-32">
         <div className="mx-auto max-w-content">
           <SectionHeading eyebrow="Process" title="How It Works" />
           <div className="mt-14">
             <Steps steps={COLOUR_ANALYSIS_PROCESS_STEPS} />
           </div>
         </div>
-      </section>
+      </ScrollFadeSection>
 
       <PackageGrid categoryKey="colour-analysis" />
 
-      <section className="px-6 py-24 md:py-32">
+      <ScrollFadeSection className="px-6 py-24 md:py-32">
         <div className="mx-auto max-w-content">
           <SectionHeading eyebrow="Book a Slot" title="Choose a Time (11 AM – 5 PM)" />
           <div className="mt-14">
@@ -79,9 +80,9 @@ export default function ColourAnalysisPageClient() {
             />
           </div>
         </div>
-      </section>
+      </ScrollFadeSection>
 
-      <section ref={inquiryRef} className="scroll-mt-24 px-6 py-24 md:py-32">
+      <ScrollFadeSection ref={inquiryRef} className="scroll-mt-24 px-6 py-24 md:py-32">
         <div className="mx-auto max-w-content">
           <SectionHeading eyebrow="Get In Touch" title="Send an Inquiry" />
           <div className="mt-14">
@@ -92,12 +93,12 @@ export default function ColourAnalysisPageClient() {
             />
           </div>
         </div>
-      </section>
+      </ScrollFadeSection>
 
-      <section className="px-6 pb-24 text-center md:pb-32">
+      <ScrollFadeSection className="px-6 pb-24 text-center md:pb-32">
         <p className="mb-6 text-sm text-charcoal-light">Prefer to chat directly?</p>
         <WhatsAppButton variant="primary" />
-      </section>
+      </ScrollFadeSection>
     </main>
   );
 }

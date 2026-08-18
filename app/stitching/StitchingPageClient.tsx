@@ -8,6 +8,7 @@ import { scrollFadeUpProps } from "@/lib/motion";
 import { SectionHeading } from "@/components/shared/SectionHeading";
 import { ValueProps } from "@/components/shared/ValueProps";
 import { Gallery } from "@/components/shared/Gallery";
+import { ScrollFadeSection } from "@/components/shared/ScrollFadeSection";
 import { PackageGrid } from "@/components/shared/PackageGrid";
 import { InquiryForm } from "@/components/shared/InquiryForm";
 import { WhatsAppButton } from "@/components/shared/WhatsAppButton";
@@ -15,7 +16,7 @@ import { WhatsAppButton } from "@/components/shared/WhatsAppButton";
 export default function StitchingPageClient() {
   return (
     <main>
-      <section className="px-6 pb-16 pt-20 text-center md:pb-24 md:pt-28">
+      <ScrollFadeSection className="px-6 pb-16 pt-20 text-center md:pb-24 md:pt-28">
         <motion.p {...scrollFadeUpProps} className="text-xs uppercase tracking-[0.3em] text-rose-dark">
           Stitching &amp; Designing
         </motion.p>
@@ -29,41 +30,41 @@ export default function StitchingPageClient() {
           Custom blouse, skirt, and lehenga stitching, designed around your reference, your fabric, and
           your occasion.
         </motion.p>
-      </section>
+      </ScrollFadeSection>
 
-      <section className="px-6 py-24 md:py-32">
+      <ScrollFadeSection className="px-6 py-24 md:py-32">
         <div className="mx-auto max-w-content">
           <SectionHeading eyebrow="Why Choose Us" title="Considered, From Fit to Finish" />
           <div className="mt-14">
             <ValueProps items={STITCHING_VALUE_PROPS} columns={3} />
           </div>
         </div>
-      </section>
+      </ScrollFadeSection>
 
-      <section className="px-6 py-24 md:py-32">
+      <ScrollFadeSection className="px-6 py-24 md:py-32">
         <div className="mx-auto max-w-content">
           <SectionHeading eyebrow="Gallery" title="From the Studio" />
           <div className="mt-14">
             <Gallery images={getGalleryImages("stitching")} />
           </div>
         </div>
-      </section>
+      </ScrollFadeSection>
 
       <PackageGrid categoryKey="stitching" title="Starting Prices" />
 
-      <section className="px-6 py-24 md:py-32">
+      <ScrollFadeSection className="px-6 py-24 md:py-32">
         <div className="mx-auto max-w-content">
           <SectionHeading eyebrow="Get In Touch" title="Send an Inquiry" />
           <div className="mt-14">
             <InquiryForm flowType="stitching" fields={STITCHING_INQUIRY_FIELDS} heading="Your Inquiry" />
           </div>
         </div>
-      </section>
+      </ScrollFadeSection>
 
-      <section className="px-6 pb-24 text-center md:pb-32">
+      <ScrollFadeSection className="px-6 pb-24 text-center md:pb-32">
         <p className="mb-6 text-sm text-charcoal-light">Prefer to chat directly?</p>
         <WhatsAppButton variant="primary" />
-      </section>
+      </ScrollFadeSection>
     </main>
   );
 }

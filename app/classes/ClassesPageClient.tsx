@@ -8,6 +8,7 @@ import { scrollFadeUpProps } from "@/lib/motion";
 import { LearningPathPicker } from "@/components/classes/LearningPathPicker";
 import { InquiryForm } from "@/components/shared/InquiryForm";
 import { WhatsAppButton } from "@/components/shared/WhatsAppButton";
+import { ScrollFadeSection } from "@/components/shared/ScrollFadeSection";
 
 export default function ClassesPageClient() {
   const [classType, setClassType] = useState<ClassType | null>(null);
@@ -16,7 +17,7 @@ export default function ClassesPageClient() {
 
   return (
     <main>
-      <section className="px-6 pb-16 pt-20 text-center md:pb-24 md:pt-28">
+      <ScrollFadeSection className="px-6 pb-16 pt-20 text-center md:pb-24 md:pt-28">
         <motion.p {...scrollFadeUpProps} className="text-xs uppercase tracking-[0.3em] text-rose-dark">
           Classes
         </motion.p>
@@ -30,9 +31,9 @@ export default function ClassesPageClient() {
           From self-grooming essentials to advanced technique, taught the way we practice it —
           hands-on, personal, and built around you.
         </motion.p>
-      </section>
+      </ScrollFadeSection>
 
-      <section className="px-6 py-16 md:py-24">
+      <ScrollFadeSection className="px-6 py-16 md:py-24">
         <div className="mx-auto max-w-content">
           {!showInquiry ? (
             <LearningPathPicker
@@ -53,12 +54,12 @@ export default function ClassesPageClient() {
             </div>
           )}
         </div>
-      </section>
+      </ScrollFadeSection>
 
-      <section className="px-6 pb-24 text-center md:pb-32">
+      <ScrollFadeSection className="px-6 pb-24 text-center md:pb-32">
         <p className="mb-6 text-sm text-charcoal-light">Prefer to chat directly?</p>
         <WhatsAppButton variant="primary" />
-      </section>
+      </ScrollFadeSection>
     </main>
   );
 }

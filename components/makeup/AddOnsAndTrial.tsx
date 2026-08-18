@@ -4,10 +4,11 @@ import { motion } from "framer-motion";
 import { scrollFadeUpProps, staggerContainer } from "@/lib/motion";
 import { BRIDAL_ADD_ONS, BRIDAL_TRIAL } from "@/lib/config/addOns";
 import { SectionHeading } from "@/components/shared/SectionHeading";
+import { ScrollFadeSection } from "@/components/shared/ScrollFadeSection";
 
 export function AddOnsAndTrial() {
   return (
-    <section className="px-6 py-24 md:py-32">
+    <ScrollFadeSection className="px-6 py-24 md:py-32">
       <div className="mx-auto max-w-content">
         <SectionHeading eyebrow="Extend Your Package" title="Add-Ons & Trial" />
         <div className="mt-14 grid grid-cols-1 gap-12 lg:grid-cols-[1.4fr_1fr]">
@@ -44,6 +45,6 @@ export function AddOnsAndTrial() {
           </motion.div>
         </div>
       </div>
-    </section>
+    </ScrollFadeSection>
   );
 }

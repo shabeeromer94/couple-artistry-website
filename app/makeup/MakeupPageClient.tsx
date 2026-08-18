@@ -9,6 +9,7 @@ import { MAKEUP_VALUE_PROPS } from "@/lib/config/valueProps";
 import { MAKEUP_INQUIRY_FIELDS } from "@/lib/config/inquiryFields";
 import { SectionHeading } from "@/components/shared/SectionHeading";
 import { ValueProps } from "@/components/shared/ValueProps";
+import { ScrollFadeSection } from "@/components/shared/ScrollFadeSection";
 import { TestimonialSection } from "@/components/shared/TestimonialSection";
 import { PackageGrid } from "@/components/shared/PackageGrid";
 import { InquiryForm } from "@/components/shared/InquiryForm";
@@ -51,7 +52,7 @@ export default function MakeupPageClient() {
   return (
     <main>
       {/* Hero */}
-      <section className="px-6 pb-16 pt-20 text-center md:pb-24 md:pt-28">
+      <ScrollFadeSection className="px-6 pb-16 pt-20 text-center md:pb-24 md:pt-28">
         <motion.p {...scrollFadeUpProps} className="text-xs uppercase tracking-[0.3em] text-rose-dark">
           Makeup
         </motion.p>
@@ -65,50 +66,50 @@ export default function MakeupPageClient() {
           Editorial-quality bridal makeup and hairstyling, built around your outfit, venue, and vision —
           from first consultation to your final look.
         </motion.p>
-      </section>
+      </ScrollFadeSection>
 
       {/* Why Choose Couple Artistry */}
-      <section className="px-6 py-24 md:py-32">
+      <ScrollFadeSection className="px-6 py-24 md:py-32">
         <div className="mx-auto max-w-content">
           <SectionHeading eyebrow="Why Choose Us" title="Why Choose Couple Artistry" />
           <div className="mt-14">
             <ValueProps items={MAKEUP_VALUE_PROPS} />
           </div>
         </div>
-      </section>
+      </ScrollFadeSection>
 
       <BridalPhilosophy />
 
       {/* Portfolio Gallery — by category, closed by default; click a
           category to reveal its own gallery. */}
-      <section className="px-6 py-24 md:py-32">
+      <ScrollFadeSection className="px-6 py-24 md:py-32">
         <div className="mx-auto max-w-content">
           <SectionHeading eyebrow="Portfolio" title="A Look at Our Work" />
           <div className="mt-14">
             <GalleryCategories />
           </div>
         </div>
-      </section>
+      </ScrollFadeSection>
 
       <TestimonialSection testimonials={getTestimonials("makeup")} />
 
       {/* Check Availability */}
-      <section className="px-6 py-24 md:py-32">
+      <ScrollFadeSection className="px-6 py-24 md:py-32">
         <div className="mx-auto max-w-content">
           <SectionHeading eyebrow="Availability" title="Check Your Date" />
           <div className="mt-14">
             <AvailabilityForm onResult={() => setTimeout(() => scrollTo(resultRef), 100)} />
           </div>
         </div>
-      </section>
+      </ScrollFadeSection>
 
       {/* Availability Result */}
       {journey.availabilityResult && (
-        <section ref={resultRef} className="scroll-mt-24 px-6 py-24 md:py-32">
+        <ScrollFadeSection ref={resultRef} className="scroll-mt-24 px-6 py-24 md:py-32">
           <div className="mx-auto max-w-content">
             <AvailabilityResult result={journey.availabilityResult} onViewPackages={handleViewPackages} />
           </div>
-        </section>
+        </ScrollFadeSection>
       )}
 
       {/* Packages — gated behind an availability check so pricing only
@@ -129,31 +130,31 @@ export default function MakeupPageClient() {
           <BookingInfo />
         </>
       ) : (
-        <section ref={packagesRef} className="scroll-mt-24 px-6 pb-24 text-center md:pb-32">
+        <ScrollFadeSection ref={packagesRef} className="scroll-mt-24 px-6 pb-24 text-center md:pb-32">
           <div className="mx-auto max-w-md">
             <SectionHeading eyebrow="Packages" title="Pricing, Tailored to Your Date" />
             <p className="mt-4 text-sm leading-relaxed text-charcoal-light">
               Check your date above and we&rsquo;ll show you the packages and pricing that apply.
             </p>
           </div>
-        </section>
+        </ScrollFadeSection>
       )}
 
       {/* Inquiry */}
-      <section ref={inquiryRef} className="scroll-mt-24 px-6 py-24 md:py-32">
+      <ScrollFadeSection ref={inquiryRef} className="scroll-mt-24 px-6 py-24 md:py-32">
         <div className="mx-auto max-w-content">
           <SectionHeading eyebrow="Get In Touch" title="Send an Inquiry" />
           <div className="mt-14">
             <InquiryForm flowType="makeup" fields={MAKEUP_INQUIRY_FIELDS} heading="Your Inquiry" />
           </div>
         </div>
-      </section>
+      </ScrollFadeSection>
 
       {/* WhatsApp CTA */}
-      <section className="px-6 pb-24 text-center md:pb-32">
+      <ScrollFadeSection className="px-6 pb-24 text-center md:pb-32">
         <p className="mb-6 text-sm text-charcoal-light">Prefer to chat directly?</p>
         <WhatsAppButton variant="primary" />
-      </section>
+      </ScrollFadeSection>
     </main>
   );
 }
