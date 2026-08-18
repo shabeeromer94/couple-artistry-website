@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
+import Image from "next/image";
 import { motion } from "framer-motion";
 import { useJourney } from "@/lib/context/JourneyProvider";
 import { scrollFadeUpProps } from "@/lib/motion";
@@ -51,21 +52,33 @@ export default function MakeupPageClient() {
 
   return (
     <main>
-      {/* Hero */}
-      <ScrollFadeSection className="px-6 pb-16 pt-20 text-center md:pb-24 md:pt-28">
-        <motion.p {...scrollFadeUpProps} className="text-xs uppercase tracking-[0.3em] text-rose-dark">
-          Makeup
-        </motion.p>
-        <motion.h1
-          {...scrollFadeUpProps}
-          className="mx-auto mt-5 max-w-2xl font-display text-4xl leading-tight text-charcoal sm:text-5xl"
-        >
-          Bridal Artistry, Led by the Couple
-        </motion.h1>
-        <motion.p {...scrollFadeUpProps} className="mx-auto mt-6 max-w-xl text-base leading-relaxed text-charcoal-light">
-          Editorial-quality bridal makeup and hairstyling, built around your outfit, venue, and vision —
-          from first consultation to your final look.
-        </motion.p>
+      {/* Hero — full-bleed portfolio photo, headline overlaid bottom-left
+          on a dark scrim so it stays readable regardless of crop. */}
+      <ScrollFadeSection className="relative h-[65vh] min-h-[440px] w-full overflow-hidden sm:h-[75vh] md:h-[88vh]">
+        <Image
+          src="/images/makeup/hero.jpg"
+          alt="Bridal makeup and hairstyling by Couple Artistry by Shaash"
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover object-[60%_25%]"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-charcoal/85 via-charcoal/15 to-transparent" />
+        <div className="relative z-10 flex h-full flex-col justify-end px-6 pb-10 sm:px-10 sm:pb-14 md:px-16 md:pb-16">
+          <motion.p {...scrollFadeUpProps} className="text-xs uppercase tracking-[0.3em] text-ivory/80">
+            Makeup
+          </motion.p>
+          <motion.h1
+            {...scrollFadeUpProps}
+            className="mt-4 max-w-xl font-display text-4xl leading-tight text-ivory sm:text-5xl md:text-6xl"
+          >
+            Bridal Artistry, Led by the Couple
+          </motion.h1>
+          <motion.p {...scrollFadeUpProps} className="mt-5 max-w-md text-base leading-relaxed text-ivory/90">
+            Editorial-quality bridal makeup and hairstyling, built around your outfit, venue, and vision —
+            from first consultation to your final look.
+          </motion.p>
+        </div>
       </ScrollFadeSection>
 
       {/* Why Choose Couple Artistry */}
