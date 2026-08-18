@@ -27,8 +27,12 @@ export const ScrollFadeSection = forwardRef<HTMLElement, ScrollFadeSectionProps>
     target: localRef,
     offset: ["start start", "end start"],
   });
-  const opacity = useTransform(scrollYProgress, [0, 1], [1, 0.35]);
-  const scale = useTransform(scrollYProgress, [0, 1], [1, 0.97]);
+  // Compressed into the first ~18% of the section's own scroll-through, so
+  // the dim happens quickly right as it starts exiting under the top edge
+  // — a snappy, clearly-visible fade rather than one smeared thinly across
+  // the section's entire height.
+  const opacity = useTransform(scrollYProgress, [0, 0.18], [1, 0.2]);
+  const scale = useTransform(scrollYProgress, [0, 0.18], [1, 0.94]);
 
   return (
     <motion.section

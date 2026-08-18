@@ -26,10 +26,10 @@ export function Testimonial({ testimonial, index = 0 }: TestimonialProps) {
 
   return (
     <motion.div
-      initial={{ opacity: 0, x: tailLeft ? -28 : 28, y: 16 }}
+      initial={{ opacity: 0, x: tailLeft ? -72 : 72, y: 28 }}
       whileInView={{ opacity: 1, x: 0, y: 0 }}
-      viewport={{ once: true, margin: "-10% 0px" }}
-      transition={{ duration: 0.8, ease: EASE_EDITORIAL }}
+      viewport={{ once: true, margin: "-15% 0px" }}
+      transition={{ duration: 1, ease: EASE_EDITORIAL, delay: index * 0.15 }}
       className={cn("relative", index % 2 === 1 && "md:mt-10")}
     >
       <figure className={cn("relative rounded-[28px] p-7", tint)}>
