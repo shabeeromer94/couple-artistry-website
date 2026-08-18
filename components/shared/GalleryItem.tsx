@@ -15,9 +15,11 @@ const ASPECT_CLASS: Record<NonNullable<GalleryImage["aspectRatio"]>, string> = {
 interface GalleryItemProps {
   image: GalleryImage;
   onOpen: () => void;
+  /** Overrides the default "w-full" sizing — e.g. "h-full shrink-0" for a horizontal rail. */
+  className?: string;
 }
 
-export function GalleryItem({ image, onOpen }: GalleryItemProps) {
+export function GalleryItem({ image, onOpen, className }: GalleryItemProps) {
   const aspectClass = ASPECT_CLASS[image.aspectRatio ?? "portrait"];
 
   return (
@@ -27,8 +29,9 @@ export function GalleryItem({ image, onOpen }: GalleryItemProps) {
       whileHover={{ scale: 1.01 }}
       transition={{ duration: 0.4 }}
       className={cn(
-        "group relative w-full overflow-hidden rounded-sm text-left",
-        aspectClass
+        "group relative overflow-hidden rounded-sm text-left",
+        aspectClass,
+        className ?? "w-full"
       )}
       aria-label={`Open ${image.alt}`}
     >
@@ -37,7 +40,7 @@ export function GalleryItem({ image, onOpen }: GalleryItemProps) {
           src={image.src}
           alt={image.alt}
           fill
-          sizes="(max-width: 768px) 50vw, 25vw"
+          sizes="(max-width: 640px) 45vw, 400px"
           className="object-cover transition-transform duration-700 group-hover:scale-105"
         />
       ) : (

@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { useJourney } from "@/lib/context/JourneyProvider";
 import { scrollFadeUpProps } from "@/lib/motion";
@@ -31,6 +31,18 @@ export default function MakeupPageClient() {
   const resultRef = useRef<HTMLDivElement>(null);
   const packagesRef = useRef<HTMLDivElement>(null);
   const inquiryRef = useRef<HTMLDivElement>(null);
+  // Pricing stays hidden until a bride has checked her date — she either
+  // lands here because her date is open, or explicitly asks to see pricing
+  // anyway after an unavailable result. Pre-seeded true if she already did
+  // this earlier in the session and got an available result.
+  const [packagesUnlocked, setPackagesUnlocked] = useState(
+    () => journey.availabilityResult?.overallStatus === "available"
+  );
+
+  function handleViewPackages() {
+    setPackagesUnlocked(true);
+    setTimeout(() => scrollTo(packagesRef), 100);
+  }
 
   function handleSelectTier(category: PricingCategoryKey, tier: PricingTier) {
     journey.setSelectedPackage({ category, tierId: tier.id, tierName: tier.name });
@@ -94,26 +106,38 @@ export default function MakeupPageClient() {
       {journey.availabilityResult && (
         <section ref={resultRef} className="scroll-mt-24 px-6 py-24 md:py-32">
           <div className="mx-auto max-w-content">
-            <AvailabilityResult
-              result={journey.availabilityResult}
-              onViewPackages={() => scrollTo(packagesRef)}
-            />
+            <AvailabilityResult result={journey.availabilityResult} onViewPackages={handleViewPackages} />
           </div>
         </section>
       )}
 
-      {/* Packages */}
-      <div ref={packagesRef} className="scroll-mt-24">
-        <PackageGrid categoryKey="makeup" onSelectTier={(tier) => handleSelectTier("makeup", tier)} />
-        <PackageGrid
-          categoryKey="bridesmaids-groom"
-          onSelectTier={(tier) => handleSelectTier("bridesmaids-groom", tier)}
-        />
-      </div>
+      {/* Packages — gated behind an availability check so pricing only
+          appears once a bride has checked her date (or asked to see it
+          anyway after an unavailable result). */}
+      {packagesUnlocked ? (
+        <>
+          <div ref={packagesRef} className="scroll-mt-24">
+            <PackageGrid categoryKey="makeup" onSelectTier={(tier) => handleSelectTier("makeup", tier)} />
+            <PackageGrid
+              categoryKey="bridesmaids-groom"
+              onSelectTier={(tier) => handleSelectTier("bridesmaids-groom", tier)}
+            />
+          </div>
 
-      <AddOnsAndTrial />
+          <AddOnsAndTrial />
 
-      <BookingInfo />
+          <BookingInfo />
+        </>
+      ) : (
+        <section ref={packagesRef} className="scroll-mt-24 px-6 pb-24 text-center md:pb-32">
+          <div className="mx-auto max-w-md">
+            <SectionHeading eyebrow="Packages" title="Pricing, Tailored to Your Date" />
+            <p className="mt-4 text-sm leading-relaxed text-charcoal-light">
+              Check your date above and we&rsquo;ll show you the packages and pricing that apply.
+            </p>
+          </div>
+        </section>
+      )}
 
       {/* Inquiry */}
       <section ref={inquiryRef} className="scroll-mt-24 px-6 py-24 md:py-32">

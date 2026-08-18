@@ -8,19 +8,13 @@ import { GALLERY_PLACEHOLDER_CAPTION } from "@/lib/config/copy";
 
 interface GalleryProps {
   images: GalleryImage[];
-  /** One of the presets below — keep literal Tailwind class strings so JIT can find them. */
-  columnPreset?: "default" | "wide";
 }
 
-// Full, literal class strings only — Tailwind's compiler scans source text
-// for complete utility names, so these can't be built from interpolated
-// pieces (e.g. `columns-${n}`) at runtime.
-const COLUMN_PRESETS: Record<NonNullable<GalleryProps["columnPreset"]>, string> = {
-  default: "columns-2 md:columns-3 lg:columns-4",
-  wide: "columns-1 md:columns-2 lg:columns-3",
-};
-
-export function Gallery({ images, columnPreset = "default" }: GalleryProps) {
+// A horizontally-scrolling filmstrip rather than a tall stacked grid — every
+// item shares one height (varying by aspect ratio instead), so the whole
+// portfolio stays within one compact band and people scroll sideways to
+// browse instead of pulling the page down through a wall of images.
+export function Gallery({ images }: GalleryProps) {
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
   const hasRealPhotos = images.some((img) => img.src);
 
@@ -31,11 +25,14 @@ export function Gallery({ images, columnPreset = "default" }: GalleryProps) {
           {GALLERY_PLACEHOLDER_CAPTION}
         </p>
       )}
-      <div className={`${COLUMN_PRESETS[columnPreset]} gap-4 space-y-4`}>
+      <div className="no-scrollbar flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-smooth pb-2">
         {images.map((image, index) => (
-          <div key={image.id} className="break-inside-avoid">
-            <GalleryItem image={image} onOpen={() => setSelectedIndex(index)} />
-          </div>
+          <GalleryItem
+            key={image.id}
+            image={image}
+            onOpen={() => setSelectedIndex(index)}
+            className="h-64 shrink-0 snap-start sm:h-80 md:h-96"
+          />
         ))}
       </div>
       <Lightbox

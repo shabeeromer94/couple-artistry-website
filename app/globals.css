@@ -16,6 +16,16 @@ body {
   .text-balance {
     text-wrap: balance;
   }
+
+  /* Hides the scrollbar on horizontally-scrollable rails (e.g. Gallery)
+     while keeping them scrollable by drag/wheel/touch/keyboard. */
+  .no-scrollbar {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
 }
 
 /* Respect reduced-motion at the CSS level too, as a backstop for anything
