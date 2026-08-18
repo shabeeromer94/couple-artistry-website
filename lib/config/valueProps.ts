@@ -28,16 +28,20 @@ export const MAKEUP_VALUE_PROPS: ValueProp[] = [
 
 export const COLOUR_ANALYSIS_VALUE_PROPS: ValueProp[] = [
   {
-    title: "Personalized to You",
-    description: "Every recommendation is built around your natural undertone and contrast — never a generic chart.",
+    title: "Saree Colours",
+    description: "Shades that suit you best, across every outfit and ceremony.",
   },
   {
-    title: "Bridal-Ready Application",
-    description: "Findings are translated directly into outfit, jewellery, and makeup decisions for your event.",
+    title: "Jewellery Tones",
+    description: "Tones that complement your skin, chosen alongside your palette.",
   },
   {
-    title: "Clear, Usable Takeaways",
-    description: "You leave with a palette guide you can actually use while shopping and planning.",
+    title: "Makeup Shades",
+    description: "Shades that enhance your features, rather than fight against them.",
+  },
+  {
+    title: "A Cohesive Bridal Style",
+    description: "Every choice — saree, jewellery, makeup — working together, head to toe.",
   },
 ];
 
