@@ -16,7 +16,6 @@ import { PackageGrid } from "@/components/shared/PackageGrid";
 import { InquiryForm } from "@/components/shared/InquiryForm";
 import { WhatsAppButton } from "@/components/shared/WhatsAppButton";
 import { BridalPhilosophy } from "@/components/makeup/BridalPhilosophy";
-import { BridalApproach } from "@/components/makeup/BridalApproach";
 import { AddOnsAndTrial } from "@/components/makeup/AddOnsAndTrial";
 import { BookingInfo } from "@/components/makeup/BookingInfo";
 import { AvailabilityForm } from "@/components/makeup/AvailabilityForm";
@@ -68,8 +67,6 @@ export default function MakeupPageClient() {
       </section>
 
       <BridalPhilosophy />
-
-      <BridalApproach />
 
       {/* Portfolio Gallery */}
       <section className="px-6 py-24 md:py-32">

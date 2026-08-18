@@ -5,24 +5,24 @@ export interface ValueProp {
 
 export const MAKEUP_VALUE_PROPS: ValueProp[] = [
   {
-    title: "Couple-Led Artistry",
+    title: "Consultation",
     description:
-      "Every bride is styled by a couple working in tandem — one vision, four hands, no handoffs.",
+      "We begin by understanding your wedding schedule, event details, personal preferences, and bridal vision, so every aspect of your look is thoughtfully planned.",
   },
   {
-    title: "Editorial Eye",
+    title: "Colour Analysis-Led Artistry",
     description:
-      "Looks are built the way an editorial shoot is built: for the camera, the lighting, and the story of the day.",
+      "Every look starts with a personalised colour analysis session — the shades, tones, and styling choices we recommend are built around what genuinely suits you.",
   },
   {
-    title: "Skin-First Technique",
+    title: "Bridal Look Styling",
     description:
-      "Long-wear, breathable finishes suited to real ceremony hours, not just the first photograph.",
+      "From jewellery to hairstyle to finishing details, we plan a complete bridal beauty look for each event — not just the makeup.",
   },
   {
-    title: "Considered Consultation",
+    title: "Trial Sessions (Optional)",
     description:
-      "Every booking begins with a conversation about your outfit, venue, and vision before a single brush is picked up.",
+      "Prefer a preview before the big day? A bridal trial session can be arranged to refine and perfect your final look.",
   },
 ];
 
