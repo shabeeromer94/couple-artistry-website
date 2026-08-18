@@ -11,3 +11,12 @@ export interface GalleryImage {
   aspectRatio?: "portrait" | "square" | "landscape";
   tags?: string[];
 }
+
+/** A named sub-collection within a category — e.g. Makeup's "Bridal Looks",
+ * "Makeup & Hair", "Before & After" — shown as a clickable band that reveals
+ * its own image rail. */
+export interface GalleryCategoryGroup {
+  id: string;
+  label: string;
+  images: GalleryImage[];
+}

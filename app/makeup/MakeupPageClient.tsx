@@ -4,18 +4,17 @@ import { useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { useJourney } from "@/lib/context/JourneyProvider";
 import { scrollFadeUpProps } from "@/lib/motion";
-import { getGalleryImages } from "@/lib/config/gallery";
 import { getTestimonials } from "@/lib/config/testimonials";
 import { MAKEUP_VALUE_PROPS } from "@/lib/config/valueProps";
 import { MAKEUP_INQUIRY_FIELDS } from "@/lib/config/inquiryFields";
 import { SectionHeading } from "@/components/shared/SectionHeading";
 import { ValueProps } from "@/components/shared/ValueProps";
-import { Gallery } from "@/components/shared/Gallery";
 import { TestimonialSection } from "@/components/shared/TestimonialSection";
 import { PackageGrid } from "@/components/shared/PackageGrid";
 import { InquiryForm } from "@/components/shared/InquiryForm";
 import { WhatsAppButton } from "@/components/shared/WhatsAppButton";
 import { BridalPhilosophy } from "@/components/makeup/BridalPhilosophy";
+import { GalleryCategories } from "@/components/makeup/GalleryCategories";
 import { AddOnsAndTrial } from "@/components/makeup/AddOnsAndTrial";
 import { BookingInfo } from "@/components/makeup/BookingInfo";
 import { AvailabilityForm } from "@/components/makeup/AvailabilityForm";
@@ -80,12 +79,13 @@ export default function MakeupPageClient() {
 
       <BridalPhilosophy />
 
-      {/* Portfolio Gallery */}
+      {/* Portfolio Gallery — by category, closed by default; click a
+          category to reveal its own gallery. */}
       <section className="px-6 py-24 md:py-32">
         <div className="mx-auto max-w-content">
           <SectionHeading eyebrow="Portfolio" title="A Look at Our Work" />
           <div className="mt-14">
-            <Gallery images={getGalleryImages("makeup")} />
+            <GalleryCategories />
           </div>
         </div>
       </section>
