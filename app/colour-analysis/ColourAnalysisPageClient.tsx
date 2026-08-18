@@ -48,6 +48,15 @@ export default function ColourAnalysisPageClient() {
         </div>
       </section>
 
+      <section className="px-6 py-24 md:py-32">
+        <div className="mx-auto max-w-content">
+          <SectionHeading eyebrow="Gallery" title="From Our Sessions" />
+          <div className="mt-14">
+            <Gallery images={getGalleryImages("colour-analysis")} />
+          </div>
+        </div>
+      </section>
+
       <section className="bg-ivory-dark px-6 py-24 md:py-32">
         <div className="mx-auto max-w-content">
           <SectionHeading eyebrow="Process" title="How It Works" />
@@ -58,15 +67,6 @@ export default function ColourAnalysisPageClient() {
       </section>
 
       <PackageGrid categoryKey="colour-analysis" />
-
-      <section className="px-6 py-24 md:py-32">
-        <div className="mx-auto max-w-content">
-          <SectionHeading eyebrow="Gallery" title="From Our Sessions" />
-          <div className="mt-14">
-            <Gallery images={getGalleryImages("colour-analysis")} />
-          </div>
-        </div>
-      </section>
 
       <section className="px-6 py-24 md:py-32">
         <div className="mx-auto max-w-content">
