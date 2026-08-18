@@ -3,59 +3,115 @@ import type { PricingCategory } from "@/types/pricing";
 // Single source of truth for every price shown on the site. Nothing in JSX
 // should ever contain a raw price string — read from PRICING instead.
 //
-// No real figures exist yet, and none are invented here — every priceLabel
-// uses an explicit "XX,XXX" placeholder token rather than a plausible-looking
-// number, so nothing on the live site could be mistaken for a real price.
-// Replace the priceLabel strings here (and only here) once real pricing is
-// supplied by the brand.
+// "makeup" and "bridesmaids-groom" carry real, brand-confirmed pricing
+// (from the 2026 portfolio/pricing PDF). "colour-analysis" and "stitching"
+// still have no confirmed pricing — every priceLabel there stays an explicit
+// "XX,XXX" placeholder token rather than a plausible-looking number, so
+// nothing on the live site could be mistaken for a real price. Replace those
+// priceLabel strings (and only those) once the brand supplies real figures.
 
 const PLACEHOLDER_PRICE_LABEL = "Starting from ₹XX,XXX — placeholder";
 
 export const PRICING: PricingCategory[] = [
   {
     category: "makeup",
-    categoryLabel: "Bridal Makeup Packages",
+    categoryLabel: "Bridal Packages",
     intro:
-      "Package structure shown for reference only — pricing is placeholder pending confirmation, and is always finalized during your inquiry.",
+      "Luxury bridal makeup services curated for your special day. Outstation packages cover locations outside Chennai city limits. We take a limited number of brides per date to ensure every bride receives our full attention.",
     tiers: [
       {
-        id: "makeup-essential",
-        name: "Essential Bridal",
-        priceLabel: PLACEHOLDER_PRICE_LABEL,
-        isPlaceholderPrice: true,
-        description: "A refined single-look bridal package for an intimate celebration.",
+        id: "makeup-bridal-hd-premium",
+        name: "Bridal HD Premium",
+        priceLabel: "₹40,000",
+        description: "Our signature HD bridal look — flawless and camera-ready for every ceremony.",
         inclusions: [
-          "Bridal HD makeup — 1 look",
-          "Hairstyling — 1 look",
-          "Pre-bridal consultation",
+          "HD bridal makeup",
+          "Luxury hairstyling",
+          "Saree draping",
+          "Premium hair extensions",
+          "Personal colour analysis",
         ],
       },
       {
-        id: "makeup-signature",
-        name: "Signature Bridal",
-        priceLabel: PLACEHOLDER_PRICE_LABEL,
-        isPlaceholderPrice: true,
-        description: "Our most-booked package, for weddings with multiple ceremonies.",
+        id: "makeup-airbrush-bridal",
+        name: "Airbrush Bridal",
+        priceLabel: "₹45,000",
+        description: "A soft-focus airbrush finish for an ultra-smooth, long-wearing bridal look.",
         inclusions: [
-          "Bridal HD makeup — up to 2 looks",
-          "Hairstyling — up to 2 looks",
-          "Draping assistance",
-          "Pre-bridal trial session",
+          "Airbrush bridal makeup",
+          "Luxury hairstyling",
+          "Saree draping",
+          "Premium hair extensions",
+          "Personal colour analysis",
         ],
-        highlighted: true,
       },
       {
-        id: "makeup-couture",
-        name: "Couture Bridal",
-        priceLabel: PLACEHOLDER_PRICE_LABEL,
-        isPlaceholderPrice: true,
-        description: "The complete couple-led experience across every ceremony.",
+        id: "makeup-outstation-hd-premium",
+        name: "Outstation Bridal HD Premium",
+        priceLabel: "₹50,000",
+        description: "HD Premium bridal artistry, brought to you for weddings outside Chennai city limits.",
         inclusions: [
-          "Bridal HD/airbrush makeup — up to 4 looks",
-          "Hairstyling — up to 4 looks",
-          "Dedicated on-site artist team",
-          "Two trial sessions",
+          "HD bridal makeup",
+          "Luxury hairstyling",
+          "Saree draping",
+          "Premium hair extensions",
+          "Personal colour analysis",
         ],
+      },
+      {
+        id: "makeup-outstation-airbrush",
+        name: "Outstation Airbrush Bridal",
+        priceLabel: "₹55,000",
+        description: "Airbrush bridal artistry, brought to you for weddings outside Chennai city limits.",
+        inclusions: [
+          "Airbrush bridal makeup",
+          "Luxury hairstyling",
+          "Saree draping",
+          "Premium hair extensions",
+          "Personal colour analysis",
+        ],
+      },
+      {
+        id: "makeup-christian-bridal",
+        name: "Christian Bridal Package",
+        priceLabel: "₹60,000",
+        description: "A complete bridal beauty package built around a gown, with a complimentary touch-up.",
+        inclusions: [
+          "Bridal makeup",
+          "Luxury hairstyling",
+          "Gown dressing assistance",
+          "Premium hair extensions",
+          "Personal colour analysis",
+          "One complimentary touch-up",
+        ],
+      },
+    ],
+  },
+  {
+    category: "bridesmaids-groom",
+    categoryLabel: "Bridesmaids & Groom",
+    intro: "Complete the bridal party's look alongside your own. Custom packages are available to suit your celebrations.",
+    tiers: [
+      {
+        id: "groom-styling",
+        name: "Groom Styling",
+        priceLabel: "₹15,000",
+        description: "Polished, camera-ready grooming for the groom.",
+        inclusions: ["Makeup", "Hairstyling", "Beard style", "Beard filling"],
+      },
+      {
+        id: "bridesmaid-simple",
+        name: "Bridesmaid Simple",
+        priceLabel: "₹12,000",
+        description: "A clean, elegant look for your bridal party.",
+        inclusions: ["Makeup", "Hairstyling", "Saree draping"],
+      },
+      {
+        id: "bridesmaid-party",
+        name: "Bridesmaid Party",
+        priceLabel: "₹15,000",
+        description: "The complete look for your bridesmaids, with added hair extensions.",
+        inclusions: ["Makeup", "Hairstyling", "Saree draping", "Hair extensions"],
       },
     ],
   },

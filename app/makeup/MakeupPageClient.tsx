@@ -16,9 +16,12 @@ import { PackageGrid } from "@/components/shared/PackageGrid";
 import { InquiryForm } from "@/components/shared/InquiryForm";
 import { WhatsAppButton } from "@/components/shared/WhatsAppButton";
 import { BridalPhilosophy } from "@/components/makeup/BridalPhilosophy";
+import { BridalApproach } from "@/components/makeup/BridalApproach";
+import { AddOnsAndTrial } from "@/components/makeup/AddOnsAndTrial";
+import { BookingInfo } from "@/components/makeup/BookingInfo";
 import { AvailabilityForm } from "@/components/makeup/AvailabilityForm";
 import { AvailabilityResult } from "@/components/makeup/AvailabilityResult";
-import type { PricingTier } from "@/types/pricing";
+import type { PricingCategoryKey, PricingTier } from "@/types/pricing";
 
 function scrollTo(ref: React.RefObject<HTMLElement>) {
   ref.current?.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -30,8 +33,8 @@ export default function MakeupPageClient() {
   const packagesRef = useRef<HTMLDivElement>(null);
   const inquiryRef = useRef<HTMLDivElement>(null);
 
-  function handleSelectTier(tier: PricingTier) {
-    journey.setSelectedPackage({ category: "makeup", tierId: tier.id, tierName: tier.name });
+  function handleSelectTier(category: PricingCategoryKey, tier: PricingTier) {
+    journey.setSelectedPackage({ category, tierId: tier.id, tierName: tier.name });
     setTimeout(() => scrollTo(inquiryRef), 100);
   }
 
@@ -65,6 +68,8 @@ export default function MakeupPageClient() {
       </section>
 
       <BridalPhilosophy />
+
+      <BridalApproach />
 
       {/* Portfolio Gallery */}
       <section className="px-6 py-24 md:py-32">
@@ -102,8 +107,16 @@ export default function MakeupPageClient() {
 
       {/* Packages */}
       <div ref={packagesRef} className="scroll-mt-24">
-        <PackageGrid categoryKey="makeup" onSelectTier={handleSelectTier} />
+        <PackageGrid categoryKey="makeup" onSelectTier={(tier) => handleSelectTier("makeup", tier)} />
+        <PackageGrid
+          categoryKey="bridesmaids-groom"
+          onSelectTier={(tier) => handleSelectTier("bridesmaids-groom", tier)}
+        />
       </div>
+
+      <AddOnsAndTrial />
+
+      <BookingInfo />
 
       {/* Inquiry */}
       <section ref={inquiryRef} className="scroll-mt-24 px-6 py-24 md:py-32">

@@ -16,6 +16,8 @@ export function PackageGrid({ categoryKey, onSelectTier, title }: PackageGridPro
   const category = getPricingCategory(categoryKey);
   if (!category) return null;
 
+  const hasPlaceholderPricing = category.tiers.some((tier) => tier.isPlaceholderPrice);
+
   return (
     <section className="py-24 md:py-32">
       <div className="mx-auto max-w-content px-6">
@@ -24,9 +26,11 @@ export function PackageGrid({ categoryKey, onSelectTier, title }: PackageGridPro
           title={title ?? category.categoryLabel}
           description={category.intro}
         />
-        <p className="mx-auto mt-3 max-w-md text-center text-xs uppercase tracking-[0.2em] text-charcoal-light/70">
-          {PRICING_PLACEHOLDER_CAPTION}
-        </p>
+        {hasPlaceholderPricing && (
+          <p className="mx-auto mt-3 max-w-md text-center text-xs uppercase tracking-[0.2em] text-charcoal-light/70">
+            {PRICING_PLACEHOLDER_CAPTION}
+          </p>
+        )}
         <div className="mt-14 grid grid-cols-1 gap-6 md:grid-cols-3">
           {category.tiers.map((tier) => (
             <Package key={tier.id} tier={tier} onSelect={() => onSelectTier?.(tier)} />

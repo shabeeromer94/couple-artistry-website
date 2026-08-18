@@ -1,16 +1,17 @@
 export interface PricingTier {
   id: string;
   name: string;
-  /** e.g. "Starting from ₹45,000 — placeholder". Never a bare, unlabeled number. */
+  /** e.g. "₹40,000" or, while unconfirmed, "Starting from ₹XX,XXX — placeholder". */
   priceLabel: string;
-  isPlaceholderPrice: true;
+  /** True only while priceLabel is an unconfirmed placeholder — omit/false once real pricing is supplied. */
+  isPlaceholderPrice?: boolean;
   description: string;
   inclusions: string[];
   ctaLabel?: string;
   highlighted?: boolean;
 }
 
-export type PricingCategoryKey = "makeup" | "colour-analysis" | "stitching";
+export type PricingCategoryKey = "makeup" | "bridesmaids-groom" | "colour-analysis" | "stitching";
 
 export interface PricingCategory {
   category: PricingCategoryKey;
