@@ -11,7 +11,7 @@ import { ValueProps } from "@/components/shared/ValueProps";
 import { Steps } from "@/components/shared/Steps";
 import { Gallery } from "@/components/shared/Gallery";
 import { ScrollFadeSection } from "@/components/shared/ScrollFadeSection";
-import { Button } from "@/components/shared/Button";
+import { PackageGrid } from "@/components/shared/PackageGrid";
 import { InquiryForm } from "@/components/shared/InquiryForm";
 import { WhatsAppButton } from "@/components/shared/WhatsAppButton";
 import { WhatIsColourAnalysis } from "@/components/colour-analysis/WhatIsColourAnalysis";
@@ -67,25 +67,7 @@ export default function ColourAnalysisPageClient() {
         </div>
       </ScrollFadeSection>
 
-      {/* Pricing — Personal Colour Analysis isn't sold as its own line item;
-          per the brand's pricing sheet it's bundled into every Bridal
-          Package, so we say that plainly and point to those instead of
-          showing invented standalone numbers. */}
-      <ScrollFadeSection className="px-6 py-24 md:py-32">
-        <div className="mx-auto max-w-xl text-center">
-          <SectionHeading eyebrow="Pricing" title="Included in Every Bridal Package" />
-          <p className="mt-4 text-base leading-relaxed text-charcoal-light">
-            Personal Colour Analysis isn&rsquo;t sold as a separate service — it&rsquo;s included at
-            no extra cost in every Couple Artistry bridal package, so your palette guides every other
-            decision from the very start.
-          </p>
-          <div className="mt-8">
-            <Button href="/makeup" variant="secondary">
-              View Bridal Packages
-            </Button>
-          </div>
-        </div>
-      </ScrollFadeSection>
+      <PackageGrid categoryKey="colour-analysis" />
 
       <ScrollFadeSection className="px-6 py-24 md:py-32">
         <div className="mx-auto max-w-content">

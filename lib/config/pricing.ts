@@ -4,16 +4,14 @@ import type { PricingCategory } from "@/types/pricing";
 // should ever contain a raw price string — read from PRICING instead.
 //
 // "makeup" and "bridesmaids-groom" carry real, brand-confirmed pricing
-// (from the 2026 portfolio/pricing PDF). "stitching" still has no confirmed
-// pricing — every priceLabel there stays an explicit "XX,XXX" placeholder
-// token rather than a plausible-looking number, so nothing on the live site
-// could be mistaken for a real price. Replace those priceLabel strings (and
-// only those) once the brand supplies real figures.
-//
-// Colour analysis has no category here at all — per the same PDF, Personal
-// Colour Analysis isn't sold as its own line item, only bundled into every
-// Bridal Package above. The Colour Analysis page says that plainly instead
-// of showing an invented standalone price (see ColourAnalysisPageClient).
+// (from the 2026 portfolio/pricing PDF). "colour-analysis" and "stitching"
+// still have no confirmed standalone pricing — every priceLabel there stays
+// an explicit "XX,XXX" placeholder token rather than a plausible-looking
+// number, so nothing on the live site could be mistaken for a real price.
+// (The PDF only lists Personal Colour Analysis as an inclusion bundled into
+// every Bridal Package, not with its own standalone price — these tiers are
+// placeholders for a possible future standalone offering.) Replace those
+// priceLabel strings (and only those) once the brand supplies real figures.
 
 const PLACEHOLDER_PRICE_LABEL = "Starting from ₹XX,XXX — placeholder";
 
@@ -117,6 +115,34 @@ export const PRICING: PricingCategory[] = [
         priceLabel: "₹15,000",
         description: "The complete look for your bridesmaids, with added hair extensions.",
         inclusions: ["Makeup", "Hairstyling", "Saree draping", "Hair extensions"],
+      },
+    ],
+  },
+  {
+    category: "colour-analysis",
+    categoryLabel: "Colour Analysis Packages",
+    intro: "Pricing is placeholder — confirmed during your consultation.",
+    tiers: [
+      {
+        id: "colour-personal",
+        name: "Personal Colour Analysis",
+        priceLabel: PLACEHOLDER_PRICE_LABEL,
+        isPlaceholderPrice: true,
+        description: "A one-on-one session to identify your seasonal colour palette.",
+        inclusions: ["In-person session", "Personal colour palette guide"],
+      },
+      {
+        id: "colour-bridal",
+        name: "Bridal Colour Consultation",
+        priceLabel: PLACEHOLDER_PRICE_LABEL,
+        isPlaceholderPrice: true,
+        description: "Colour analysis tailored to outfit, jewellery and makeup planning.",
+        inclusions: [
+          "Extended in-person session",
+          "Personal colour palette guide",
+          "Outfit & jewellery-tone recommendations",
+        ],
+        highlighted: true,
       },
     ],
   },

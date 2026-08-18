@@ -11,7 +11,7 @@ export interface PricingTier {
   highlighted?: boolean;
 }
 
-export type PricingCategoryKey = "makeup" | "bridesmaids-groom" | "stitching";
+export type PricingCategoryKey = "makeup" | "bridesmaids-groom" | "colour-analysis" | "stitching";
 
 export interface PricingCategory {
   category: PricingCategoryKey;
