@@ -2,6 +2,7 @@ import Image from "next/image";
 import { RevealGate } from "@/components/home/RevealGate";
 import { ServiceMenu } from "@/components/home/ServiceMenu";
 import { ScrollFadeSection } from "@/components/shared/ScrollFadeSection";
+import { SectionHeading } from "@/components/shared/SectionHeading";
 
 export default function Home() {
   return (
@@ -32,9 +33,10 @@ export default function Home() {
             <div className="mt-8 max-w-xl border-t border-ivory/25 pt-6 sm:mt-10 sm:pt-8">
               <p className="text-xs uppercase tracking-[0.25em] text-ivory/70">About Us</p>
               <p className="mt-3 text-sm leading-relaxed text-ivory/90 sm:text-base">
-                Founded by Ashi &amp; Shabeer, Couple Artistry by Shaash brings together 9+ years of
-                bridal beauty experience — makeup, colour analysis, and styling guided as one, so
-                every look feels timeless, elegant, and completely you.
+                Founded by Ashika &amp; Shabeer, Couple Artistry by Shaash is a bridal beauty studio
+                built around the art of creating a look together. With 9+ years of experience in
+                makeup, hairstyling, colour analysis and bridal styling, we bring every element
+                together to create looks that feel timeless, refined and uniquely yours.
               </p>
             </div>
           </div>
@@ -42,7 +44,10 @@ export default function Home() {
 
         <ScrollFadeSection className="px-6 pb-16 pt-16 md:pb-20 md:pt-20">
           <div className="mx-auto max-w-3xl">
-            <ServiceMenu />
+            <SectionHeading eyebrow="Our Services" title="What We Love to Do" />
+            <div className="mt-14">
+              <ServiceMenu />
+            </div>
           </div>
         </ScrollFadeSection>
       </main>

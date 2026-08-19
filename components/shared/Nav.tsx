@@ -52,8 +52,15 @@ export function Nav() {
   }, [isHeroPage]);
 
   // Transparent + light text while floating over an unscrolled hero photo;
-  // solid ivory bar + dark text everywhere else, and on scroll.
-  const overlay = isHeroPage && !scrolled;
+  // solid ivory bar + dark text everywhere else, on scroll, and whenever the
+  // mobile menu is open (so "Close" and the brand mark stay legible against
+  // the panel's own solid background instead of blending into light parts
+  // of the photo).
+  const overlay = isHeroPage && !scrolled && !menuOpen;
+  // A soft drop shadow behind the overlay text so it stays readable over
+  // whichever part of the photo — light curtain or dark hair — sits behind
+  // it, without needing a permanent scrim across the whole nav.
+  const overlayShadow = "[text-shadow:0_1px_10px_rgba(0,0,0,0.6)]";
 
   return (
     <AnimatePresence>
@@ -72,7 +79,7 @@ export function Nav() {
               <span
                 className={cn(
                   "block font-display text-2xl tracking-wide transition-colors duration-500 sm:text-3xl",
-                  overlay ? "text-ivory" : "text-charcoal"
+                  overlay ? cn("text-ivory", overlayShadow) : "text-charcoal"
                 )}
               >
                 Couple Artistry
@@ -80,7 +87,7 @@ export function Nav() {
               <span
                 className={cn(
                   "mt-1 block text-xs uppercase tracking-[0.2em] transition-colors duration-500",
-                  overlay ? "text-ivory/75" : "text-charcoal-light"
+                  overlay ? cn("text-ivory/75", overlayShadow) : "text-charcoal-light"
                 )}
               >
                 by Shaash
@@ -97,7 +104,9 @@ export function Nav() {
                     rel="noopener noreferrer"
                     className={cn(
                       "text-xs font-medium uppercase tracking-[0.15em] transition-colors duration-500",
-                      overlay ? "text-ivory/85 hover:text-ivory" : "text-charcoal-light hover:text-wine"
+                      overlay
+                        ? cn("text-ivory/85 hover:text-ivory", overlayShadow)
+                        : "text-charcoal-light hover:text-wine"
                     )}
                   >
                     {link.label}
@@ -108,7 +117,9 @@ export function Nav() {
                     href={link.href}
                     className={cn(
                       "text-xs font-medium uppercase tracking-[0.15em] transition-colors duration-500",
-                      overlay ? "text-ivory/85 hover:text-ivory" : "text-charcoal-light hover:text-wine"
+                      overlay
+                        ? cn("text-ivory/85 hover:text-ivory", overlayShadow)
+                        : "text-charcoal-light hover:text-wine"
                     )}
                   >
                     {link.label}
@@ -122,7 +133,7 @@ export function Nav() {
               onClick={() => setMenuOpen((v) => !v)}
               className={cn(
                 "text-xs font-medium uppercase tracking-[0.15em] transition-colors duration-500 md:hidden",
-                overlay ? "text-ivory" : "text-charcoal"
+                overlay ? cn("text-ivory", overlayShadow) : "text-charcoal"
               )}
               aria-expanded={menuOpen}
               aria-label="Toggle menu"
