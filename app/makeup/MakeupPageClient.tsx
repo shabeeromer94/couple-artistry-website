@@ -52,9 +52,11 @@ export default function MakeupPageClient() {
 
   return (
     <main>
-      {/* Hero — full-bleed portfolio photo, headline overlaid bottom-left
-          on a dark scrim so it stays readable regardless of crop. */}
-      <ScrollFadeSection className="relative h-[65vh] min-h-[440px] w-full overflow-hidden sm:h-[75vh] md:h-[88vh]">
+      {/* Hero — full-bleed portfolio photo, extending up under the
+          transparent nav (-mt-24 matches the nav's own h-24). Headline
+          overlaid bottom-left on a dark scrim so it stays readable
+          regardless of crop. */}
+      <ScrollFadeSection className="relative -mt-24 h-[65vh] min-h-[440px] w-full overflow-hidden sm:h-[75vh] md:h-[88vh]">
         <Image
           src="/images/makeup/hero.jpg"
           alt="Bridal makeup and hairstyling by Couple Artistry by Shaash"
