@@ -9,6 +9,9 @@ export const MAKEUP_SESSION_DURATION_HOURS = 4;
 /** Ashi & Shabeer — the team can cover at most this many distinct locations at the same time. */
 export const MAX_SIMULTANEOUS_LOCATIONS = 2;
 
+/** A single venue can only take so many overlapping bookings at once, even though multiple people at one place is normal. */
+export const MAX_BOOKINGS_PER_LOCATION = 3;
+
 export const EVENT_COUNT_OPTIONS = [
   { label: "Single Event", value: "single" as const, count: 1 },
   { label: "Two Events", value: "two" as const, count: 2 },

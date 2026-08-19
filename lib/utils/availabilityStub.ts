@@ -1,7 +1,11 @@
 import { deterministicPercent } from "./hash";
 import { getOverlappingEvents } from "@/lib/googleCalendar/client";
 import { env, isGoogleCalendarConfigured } from "@/lib/config/env";
-import { MAKEUP_SESSION_DURATION_HOURS, MAX_SIMULTANEOUS_LOCATIONS } from "@/lib/config/eventTypes";
+import {
+  MAKEUP_SESSION_DURATION_HOURS,
+  MAX_SIMULTANEOUS_LOCATIONS,
+  MAX_BOOKINGS_PER_LOCATION,
+} from "@/lib/config/eventTypes";
 import type { AvailabilityStatus } from "@/types/journey";
 
 // Real lookup when Google Calendar is configured (see
@@ -55,12 +59,16 @@ export async function checkEventAvailability(
     const { startISO, endISO } = makeupWindow(event.date, event.timing);
     const overlapping = await getOverlappingEvents(env.googleCalendarId, startISO, endISO);
 
-    // Ashi & Shabeer are two artists, so two different locations can be
-    // covered in the same window by splitting up — an overlapping booking
-    // at the SAME place isn't a conflict at all (that's just multiple
-    // people at one venue, already how bridesmaids/group bookings work).
-    // It only becomes a problem once two *other, different* locations are
-    // already committed in this window — there's no one left to send.
+    // Two capacity limits apply in this window:
+    //   - the requested location itself: multiple people at one venue is
+    //     normal (bridesmaids/group bookings), but there's still a ceiling
+    //     on how many separate bookings one venue can take at once
+    //     (MAX_BOOKINGS_PER_LOCATION);
+    //   - a *different* location can only be covered if one of the two
+    //     artists is free to go there — so it's only unavailable once
+    //     MAX_SIMULTANEOUS_LOCATIONS distinct *other* locations are already
+    //     committed in this window, since there's no one left to send.
+    let requestedLocationCount = 0;
     const otherLocations = new Set<string>();
     for (const cal of overlapping) {
       const locationText = (cal.location || cal.summary || "").trim();
@@ -70,12 +78,16 @@ export async function checkEventAvailability(
         otherLocations.add(`unlabeled:${cal.id}`);
         continue;
       }
-      if (!sameLocation(locationText, event.city)) {
+      if (sameLocation(locationText, event.city)) {
+        requestedLocationCount += 1;
+      } else {
         otherLocations.add(normalizeLocation(locationText));
       }
     }
 
-    return otherLocations.size >= MAX_SIMULTANEOUS_LOCATIONS ? "unavailable" : "available";
+    if (requestedLocationCount >= MAX_BOOKINGS_PER_LOCATION) return "unavailable";
+    if (otherLocations.size >= MAX_SIMULTANEOUS_LOCATIONS) return "unavailable";
+    return "available";
   } catch (err) {
     console.error("Google Calendar availability lookup failed, falling back to stub:", err);
     return stubStatus(event);
