@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import { RevealGate } from "@/components/home/RevealGate";
 import { ServiceMenu } from "@/components/home/ServiceMenu";
 import { ScrollFadeSection } from "@/components/shared/ScrollFadeSection";
@@ -31,7 +32,15 @@ export default function Home() {
             </p>
 
             <div className="mt-8 max-w-xl border-t border-ivory/25 pt-6 sm:mt-10 sm:pt-8">
-              <p className="text-xs uppercase tracking-[0.25em] text-ivory/70">About Us</p>
+              <Link
+                href="/about"
+                className="group inline-flex items-center gap-2 text-xs uppercase tracking-[0.25em] text-ivory/70 transition-colors duration-300 hover:text-ivory"
+              >
+                About Us
+                <span aria-hidden className="transition-transform duration-300 group-hover:translate-x-1">
+                  →
+                </span>
+              </Link>
               <p className="mt-3 text-sm leading-relaxed text-ivory/90 sm:text-base">
                 Founded by Ashika &amp; Shabeer, Couple Artistry by Shaash is a bridal beauty studio
                 built around the art of creating a look together. With 9+ years of experience in

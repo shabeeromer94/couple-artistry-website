@@ -11,6 +11,7 @@ export const NAV_LINKS: NavLink[] = [
   { label: "Classes", href: "/classes" },
   { label: "Colour Analysis", href: "/colour-analysis" },
   { label: "Stitching & Designing", href: "/stitching" },
+  { label: "About", href: "/about" },
   { label: "Shaash Beauty Store", href: env.shaashStoreUrl, external: true },
 ];
 

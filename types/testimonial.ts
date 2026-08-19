@@ -2,12 +2,12 @@ export type TestimonialService = "makeup" | "classes" | "colour-analysis" | "sti
 
 export interface Testimonial {
   id: string;
-  /** Always a clearly-placeholder name until real Google reviews are wired in. */
+  /** A placeholder entry always uses a clearly-fake name; a "google" entry uses the reviewer's real name, copied verbatim from the review. */
   authorName: string;
   quote: string;
   service: TestimonialService;
   rating?: number;
-  /** Literal true — this app never invents testimonials as if they were real. */
-  isPlaceholder: true;
+  /** True only for placeholder copy — this app never invents testimonials as if they were real. False for genuine reviews (source: "google"). */
+  isPlaceholder: boolean;
   source: "placeholder" | "google";
 }

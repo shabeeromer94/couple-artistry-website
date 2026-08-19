@@ -12,6 +12,12 @@ interface ValuePropsProps {
 export function ValueProps({ items, columns = 4 }: ValuePropsProps) {
   const gridCols =
     columns === 2 ? "sm:grid-cols-2" : columns === 3 ? "sm:grid-cols-3" : "sm:grid-cols-2 lg:grid-cols-4";
+  // Four-item grids read naturally as pairs (e.g. "Consultation" next to
+  // "Colour Analysis"), so start them at 2 columns immediately instead of
+  // stacking one-per-row until the sm breakpoint — halves the scroll depth
+  // on mobile. Odd-count grids (3 columns) stay single-column on mobile,
+  // since a lone trailing card looks unbalanced.
+  const baseCols = columns === 4 ? "grid-cols-2" : "grid-cols-1";
 
   return (
     <motion.div
@@ -19,7 +25,7 @@ export function ValueProps({ items, columns = 4 }: ValuePropsProps) {
       whileInView="visible"
       viewport={{ once: true, margin: "-10% 0px" }}
       variants={staggerContainer}
-      className={`grid grid-cols-1 gap-10 ${gridCols}`}
+      className={`grid ${baseCols} gap-x-6 gap-y-10 sm:gap-10 ${gridCols}`}
     >
       {items.map((item) => (
         <motion.div key={item.title} variants={scrollFadeUpProps.variants} className="text-left">

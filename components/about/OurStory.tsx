@@ -5,7 +5,12 @@ import { motion } from "framer-motion";
 import { scrollFadeUpProps } from "@/lib/motion";
 import { ScrollFadeSection } from "@/components/shared/ScrollFadeSection";
 
-export function BridalPhilosophy() {
+/**
+ * The founder story — moved here from the Makeup page so "About" has one
+ * dedicated home instead of repeating on every service page. See
+ * AboutPageClient for the rest of the page (contact details, social links).
+ */
+export function OurStory() {
   return (
     <ScrollFadeSection className="py-24 md:py-32">
       <div className="mx-auto grid max-w-content grid-cols-1 items-center gap-12 px-6 md:grid-cols-2">
@@ -19,7 +24,7 @@ export function BridalPhilosophy() {
           />
         </motion.div>
         <motion.div {...scrollFadeUpProps}>
-          <p className="mb-3 text-xs uppercase tracking-[0.25em] text-rose-dark">About Us</p>
+          <p className="mb-3 text-xs uppercase tracking-[0.25em] text-rose-dark">Our Story</p>
           <h2 className="font-display text-3xl leading-tight text-charcoal sm:text-4xl">
             More Than Makeup — A Complete Bridal Experience
           </h2>

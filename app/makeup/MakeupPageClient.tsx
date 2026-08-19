@@ -15,7 +15,6 @@ import { TestimonialSection } from "@/components/shared/TestimonialSection";
 import { PackageGrid } from "@/components/shared/PackageGrid";
 import { InquiryForm } from "@/components/shared/InquiryForm";
 import { WhatsAppButton } from "@/components/shared/WhatsAppButton";
-import { BridalPhilosophy } from "@/components/makeup/BridalPhilosophy";
 import { GalleryCategories } from "@/components/makeup/GalleryCategories";
 import { AddOnsAndTrial } from "@/components/makeup/AddOnsAndTrial";
 import { BookingInfo } from "@/components/makeup/BookingInfo";
@@ -77,8 +76,8 @@ export default function MakeupPageClient() {
             Bridal Artistry, Led by the Couple
           </motion.h1>
           <motion.p {...scrollFadeUpProps} className="mt-5 max-w-md text-base leading-relaxed text-ivory/90">
-            Editorial-quality bridal makeup and hairstyling, built around your outfit, venue, and vision —
-            from first consultation to your final look.
+            Makeup and hairstyling shaped around your outfit, venue, and vision — with every detail
+            considered from consultation to the final look.
           </motion.p>
         </div>
       </ScrollFadeSection>
@@ -92,8 +91,6 @@ export default function MakeupPageClient() {
           </div>
         </div>
       </ScrollFadeSection>
-
-      <BridalPhilosophy />
 
       {/* Portfolio Gallery — by category, closed by default; click a
           category to reveal its own gallery. */}

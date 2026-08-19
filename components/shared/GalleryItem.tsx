@@ -42,7 +42,7 @@ export function GalleryItem({ image, onOpen, className, aspectRatio }: GalleryIt
           src={image.src}
           alt={image.alt}
           fill
-          sizes="(max-width: 640px) 30vw, 220px"
+          sizes="(max-width: 640px) 40vw, 240px"
           // Biased toward the top so a tight 3:4 crop keeps the face in
           // frame, trimming from lower down (outfit/saree) first.
           className="object-cover object-[center_22%] transition-transform duration-700 group-hover:scale-105"

@@ -94,7 +94,7 @@ export function Gallery({ images }: GalleryProps) {
             image={image}
             onOpen={() => setSelectedIndex(index)}
             aspectRatio="portrait"
-            className="h-28 shrink-0 snap-start sm:h-56 md:h-72"
+            className="h-48 shrink-0 snap-start sm:h-64 md:h-80"
           />
         ))}
       </div>
