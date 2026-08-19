@@ -1,26 +1,11 @@
 // Shared types for the availability/journey session layer.
 // See lib/context/JourneyProvider.tsx for how these are stored and read.
 
-export type EventTypeValue =
-  | "Wedding"
-  | "Reception"
-  | "Engagement"
-  | "Sangeet"
-  | "Mehendi"
-  | "Haldi"
-  | "Baby Shower"
-  | "Seemantham"
-  | "Photoshoot"
-  | "Birthday"
-  | "Other";
-
 export interface JourneyEvent {
   id: string;
   date: string; // ISO yyyy-mm-dd
-  eventType: EventTypeValue | "";
-  customEventType?: string; // required when eventType === "Other"
+  timing: string; // "HH:MM" 24h, from a time input — when on the date the look is needed
   city: string;
-  areaVenue: string;
 }
 
 export type AvailabilityStatus = "available" | "unavailable";

@@ -44,29 +44,30 @@ export async function POST(request: Request) {
       availableCount === results.length ? "available" : availableCount === 0 ? "unavailable" : "partial";
 
     const checkedAt = new Date().toISOString();
-    let checkId = globalThis.crypto.randomUUID();
+    // Generated up front and inserted explicitly, rather than read back via
+    // .select() after insert — anon has insert-only RLS on this table (by
+    // design: these logs shouldn't be publicly readable), and .select()
+    // after insert requires Postgres to RETURNING the row, which needs a
+    // SELECT policy anon doesn't have and shouldn't get.
+    const checkId = globalThis.crypto.randomUUID();
 
     if (isSupabaseConfigured()) {
       try {
         const supabase = getSupabaseServerClient();
-        const { data, error } = await supabase
-          .from("availability_checks")
-          .insert({
-            events,
-            event_count: events.length,
-            overall_status: overallStatus,
-            results,
-            session_id: sessionId ?? null,
-            utm_source: utm?.utm_source ?? null,
-            utm_medium: utm?.utm_medium ?? null,
-            utm_campaign: utm?.utm_campaign ?? null,
-            utm_content: utm?.utm_content ?? null,
-            utm_term: utm?.utm_term ?? null,
-          })
-          .select("id")
-          .single();
-        if (!error && data) checkId = data.id;
-        else if (error) console.error("availability_checks insert failed:", error.message);
+        const { error } = await supabase.from("availability_checks").insert({
+          id: checkId,
+          events,
+          event_count: events.length,
+          overall_status: overallStatus,
+          results,
+          session_id: sessionId ?? null,
+          utm_source: utm?.utm_source ?? null,
+          utm_medium: utm?.utm_medium ?? null,
+          utm_campaign: utm?.utm_campaign ?? null,
+          utm_content: utm?.utm_content ?? null,
+          utm_term: utm?.utm_term ?? null,
+        });
+        if (error) console.error("availability_checks insert failed:", error.message);
       } catch (err) {
         console.error("availability_checks insert threw:", err);
       }

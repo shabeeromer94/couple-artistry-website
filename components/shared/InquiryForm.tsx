@@ -6,7 +6,7 @@ import { motion } from "framer-motion";
 import type { FieldSchemaEntry, FlowType, InquiryDetails, InquiryPayload } from "@/types/inquiry";
 import { inquiryPayloadSchema } from "@/lib/validation/inquiry";
 import { useJourney } from "@/lib/context/JourneyProvider";
-import { formatDisplayDate } from "@/lib/utils/format";
+import { formatDisplayDate, formatDisplayTime } from "@/lib/utils/format";
 import { scrollFadeUpProps } from "@/lib/motion";
 import { Button } from "./Button";
 
@@ -21,16 +21,9 @@ interface InquiryFormProps {
 
 type FormValues = Record<string, string>;
 
-function summarizeEventsForContext(
-  events: { date: string; eventType: string; customEventType?: string; city: string; areaVenue: string }[]
-): string {
+function summarizeEventsForContext(events: { date: string; timing: string; city: string }[]): string {
   if (!events.length) return "";
-  return events
-    .map((e) => {
-      const type = e.eventType === "Other" ? e.customEventType || "Other" : e.eventType;
-      return `${type} — ${formatDisplayDate(e.date)} — ${e.areaVenue}, ${e.city}`;
-    })
-    .join("\n");
+  return events.map((e) => `${formatDisplayDate(e.date)} at ${formatDisplayTime(e.timing)} — ${e.city}`).join("\n");
 }
 
 function buildDetails(flowType: FlowType, values: FormValues, journey: ReturnType<typeof useJourney>): InquiryDetails {

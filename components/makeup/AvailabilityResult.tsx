@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import type { AvailabilityCheckResult } from "@/types/journey";
 import { scrollFadeUpProps } from "@/lib/motion";
 import { Button } from "@/components/shared/Button";
+import { WhatsAppButton } from "@/components/shared/WhatsAppButton";
 import { AvailabilityDisclaimer } from "./AvailabilityDisclaimer";
 
 interface AvailabilityResultProps {
@@ -36,10 +37,18 @@ export function AvailabilityResult({ result, onViewPackages }: AvailabilityResul
         ))}
       </ul>
 
-      <div className="mt-8">
+      <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
         <Button onClick={onViewPackages} size="lg">
-          {isAvailable ? "View Quotation" : "View Quotation Anyway"}
+          {isAvailable ? "View Packages" : "View Packages Anyway"}
         </Button>
+        {!isAvailable && (
+          <WhatsAppButton
+            variant="secondary"
+            size="lg"
+            label="Ask About Future Dates"
+            message="Hi Couple Artistry! My date wasn't available — I'd like to check future dates with you."
+          />
+        )}
       </div>
 
       <div className="mt-8">

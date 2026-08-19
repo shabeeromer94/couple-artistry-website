@@ -101,9 +101,18 @@ Everything placeholder is clearly labeled and centralized so swaps are mechanica
 
 ## 8. What's stubbed, and how to go live with it later
 
-Two things are intentionally **not** real integrations yet — both are built so the real thing can drop in without touching any page or component:
+- **Availability & slot checks** (`/api/availability/check`, `/api/slots/check`) are wired for a real Google Calendar free/busy lookup, but run on a deterministic stub result until you supply credentials — see `lib/utils/availabilityStub.ts` and `lib/utils/slotStub.ts`. Both call `isGoogleCalendarConfigured()` first and only fall back to the stub when it's false (or if the live lookup itself throws), so the site works exactly as it does today with zero setup.
 
-- **Availability & slot checks** (`/api/availability/check`, `/api/slots/check`) currently return a deterministic stub result instead of consulting a real calendar — see `lib/utils/availabilityStub.ts` and `lib/utils/slotStub.ts`. When you're ready to connect Google Calendar: implement the real free/busy lookup inside those two functions (same input/output shape), add your Google service-account credentials as server-only env vars (never `NEXT_PUBLIC_`), and nothing else in the app needs to change.
+  To go live: follow the Google Cloud Console steps (create a project, enable the Calendar API, create a service account, download its JSON key, share your bookings calendar with the service account's email as "See all event details", copy the calendar's ID), then set these three env vars — locally in `.env.local`, and in Vercel for Production/Preview/Development:
+
+  | Variable | Where it comes from |
+  |---|---|
+  | `GOOGLE_SERVICE_ACCOUNT_EMAIL` | The `client_email` field in the downloaded JSON key |
+  | `GOOGLE_SERVICE_ACCOUNT_PRIVATE_KEY` | The `private_key` field — paste as-is, literal `\n` sequences included |
+  | `GOOGLE_CALENDAR_ID` | Your calendar's Settings and sharing → Integrate calendar → Calendar ID |
+
+  As soon as all three are set, real checks kick in automatically — no other code change. A bridal event date is treated as unavailable if the calendar has *any* event that day (the artist(s) are booked for the whole day); a Colour Analysis slot is treated as unavailable only if an event overlaps that specific hour. Both are hardcoded to IST (+05:30).
+
 - **WhatsApp handoff** uses `wa.me` deep links (no WhatsApp Business API integration). This is standard practice and works well as-is — upgrading to the official API later is a backend-only change to `lib/utils/whatsapp.ts` and the `/api/inquiries` route.
 
 ## 9. Admin access to inquiries (for now)

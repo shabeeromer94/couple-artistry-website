@@ -32,33 +32,36 @@ export async function POST(request: Request) {
 
   try {
     const supabase = getSupabaseServerClient();
-    const { data, error } = await supabase
-      .from("inquiries")
-      .insert({
-        flow_type: payload.flowType,
-        full_name: payload.fullName,
-        whatsapp_number: payload.whatsappNumber,
-        email: payload.email || null,
-        message: payload.message || null,
-        details: payload.details,
-        selected_package_category: payload.selectedPackage?.category ?? null,
-        selected_package_tier: payload.selectedPackage?.tierName ?? null,
-        availability_check_id:
-          payload.flowType === "makeup" ? payload.details.availabilityCheckId ?? null : null,
-        slot_check_id:
-          payload.flowType === "colour-analysis" ? payload.details.slotCheckId ?? null : null,
-        utm_source: payload.utm?.utm_source ?? null,
-        utm_medium: payload.utm?.utm_medium ?? null,
-        utm_campaign: payload.utm?.utm_campaign ?? null,
-        utm_content: payload.utm?.utm_content ?? null,
-        utm_term: payload.utm?.utm_term ?? null,
-        source_page: payload.sourcePage,
-      })
-      .select("id")
-      .single();
+    // Generated up front and inserted explicitly rather than read back via
+    // .select() after insert — anon has insert-only RLS on this table (by
+    // design: names/numbers/emails here shouldn't be publicly readable),
+    // and .select() after insert requires Postgres to RETURNING the row,
+    // which needs a SELECT policy anon doesn't have and shouldn't get.
+    const inquiryId = globalThis.crypto.randomUUID();
+    const { error } = await supabase.from("inquiries").insert({
+      id: inquiryId,
+      flow_type: payload.flowType,
+      full_name: payload.fullName,
+      whatsapp_number: payload.whatsappNumber,
+      email: payload.email || null,
+      message: payload.message || null,
+      details: payload.details,
+      selected_package_category: payload.selectedPackage?.category ?? null,
+      selected_package_tier: payload.selectedPackage?.tierName ?? null,
+      availability_check_id:
+        payload.flowType === "makeup" ? payload.details.availabilityCheckId ?? null : null,
+      slot_check_id:
+        payload.flowType === "colour-analysis" ? payload.details.slotCheckId ?? null : null,
+      utm_source: payload.utm?.utm_source ?? null,
+      utm_medium: payload.utm?.utm_medium ?? null,
+      utm_campaign: payload.utm?.utm_campaign ?? null,
+      utm_content: payload.utm?.utm_content ?? null,
+      utm_term: payload.utm?.utm_term ?? null,
+      source_page: payload.sourcePage,
+    });
 
-    if (error || !data) {
-      console.error("inquiries insert failed:", error?.message);
+    if (error) {
+      console.error("inquiries insert failed:", error.message);
       return NextResponse.json(
         { success: false, error: "We couldn't save your inquiry. Please try again or reach out on WhatsApp directly." },
         { status: 500 }
@@ -68,7 +71,7 @@ export async function POST(request: Request) {
     const message = formatInquiryMessage(payload);
     const whatsappUrl = buildWaLink(message, env.whatsappNumber);
 
-    return NextResponse.json({ success: true, inquiryId: data.id, whatsappUrl });
+    return NextResponse.json({ success: true, inquiryId, whatsappUrl });
   } catch (err) {
     console.error("inquiry submission failed:", err);
     return NextResponse.json({ success: false, error: "Something went wrong. Please try again." }, { status: 500 });

@@ -1,7 +1,6 @@
 "use client";
 
 import type { JourneyEvent } from "@/types/journey";
-import { EVENT_TYPE_OPTIONS } from "@/lib/config/eventTypes";
 
 interface EventFieldsetProps {
   index: number;
@@ -43,54 +42,22 @@ export function EventFieldset({ index, value, onChange, onRemove }: EventFieldse
         </label>
 
         <label className="block">
-          <span className={labelClass}>Event Type</span>
-          <select
-            value={value.eventType}
-            onChange={(e) => set("eventType", e.target.value as JourneyEvent["eventType"])}
-            className={fieldClass}
-            required
-          >
-            <option value="" disabled>
-              Select…
-            </option>
-            {EVENT_TYPE_OPTIONS.map((opt) => (
-              <option key={opt.value} value={opt.value}>
-                {opt.label}
-              </option>
-            ))}
-          </select>
-        </label>
-
-        {value.eventType === "Other" && (
-          <label className="block sm:col-span-2">
-            <span className={labelClass}>Describe the event</span>
-            <input
-              type="text"
-              value={value.customEventType ?? ""}
-              onChange={(e) => set("customEventType", e.target.value)}
-              className={fieldClass}
-              required
-            />
-          </label>
-        )}
-
-        <label className="block">
-          <span className={labelClass}>City</span>
+          <span className={labelClass}>Timing</span>
           <input
-            type="text"
-            value={value.city}
-            onChange={(e) => set("city", e.target.value)}
+            type="time"
+            value={value.timing}
+            onChange={(e) => set("timing", e.target.value)}
             className={fieldClass}
             required
           />
         </label>
 
-        <label className="block">
-          <span className={labelClass}>Area / Venue</span>
+        <label className="block sm:col-span-2">
+          <span className={labelClass}>City</span>
           <input
             type="text"
-            value={value.areaVenue}
-            onChange={(e) => set("areaVenue", e.target.value)}
+            value={value.city}
+            onChange={(e) => set("city", e.target.value)}
             className={fieldClass}
             required
           />

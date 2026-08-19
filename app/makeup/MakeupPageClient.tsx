@@ -105,10 +105,17 @@ export default function MakeupPageClient() {
 
       <TestimonialSection testimonials={getTestimonials("makeup")} />
 
-      {/* Check Availability */}
+      {/* Check Availability & Packages — one combined section: checking a
+          date surfaces both the availability status and, right after, the
+          packages and pricing that apply, so there's no separate "pricing"
+          section repeating the same "check your date first" message. */}
       <ScrollFadeSection className="px-6 py-24 md:py-32">
         <div className="mx-auto max-w-content">
-          <SectionHeading eyebrow="Availability" title="Check Your Date" />
+          <SectionHeading
+            eyebrow="Availability & Packages"
+            title="Check Your Date"
+            description="Check your date to get your availability status and see the packages and pricing that apply to you."
+          />
           <div className="mt-14">
             <AvailabilityForm onResult={() => setTimeout(() => scrollTo(resultRef), 100)} />
           </div>
@@ -126,8 +133,9 @@ export default function MakeupPageClient() {
 
       {/* Packages — gated behind an availability check so pricing only
           appears once a bride has checked her date (or asked to see it
-          anyway after an unavailable result). */}
-      {packagesUnlocked ? (
+          anyway after an unavailable result); the section above already
+          explains that, so there's nothing to show here until then. */}
+      {packagesUnlocked && (
         <>
           <div ref={packagesRef} className="scroll-mt-24">
             <PackageGrid categoryKey="makeup" onSelectTier={(tier) => handleSelectTier("makeup", tier)} />
@@ -141,26 +149,21 @@ export default function MakeupPageClient() {
 
           <BookingInfo />
         </>
-      ) : (
-        <ScrollFadeSection ref={packagesRef} className="scroll-mt-24 px-6 pb-24 text-center md:pb-32">
-          <div className="mx-auto max-w-md">
-            <SectionHeading eyebrow="Packages" title="Pricing, Tailored to Your Date" />
-            <p className="mt-4 text-sm leading-relaxed text-charcoal-light">
-              Check your date above and we&rsquo;ll show you the packages and pricing that apply.
-            </p>
+      )}
+
+      {/* Inquiry — only once a date's been checked, so a bride reaches the
+          form with an availability result (and possibly a package) already
+          in hand, instead of being asked to inquire blind. */}
+      {journey.availabilityResult && (
+        <ScrollFadeSection ref={inquiryRef} className="scroll-mt-24 px-6 py-24 md:py-32">
+          <div className="mx-auto max-w-content">
+            <SectionHeading eyebrow="Get In Touch" title="Send an Inquiry" />
+            <div className="mt-14">
+              <InquiryForm flowType="makeup" fields={MAKEUP_INQUIRY_FIELDS} heading="Your Inquiry" />
+            </div>
           </div>
         </ScrollFadeSection>
       )}
-
-      {/* Inquiry */}
-      <ScrollFadeSection ref={inquiryRef} className="scroll-mt-24 px-6 py-24 md:py-32">
-        <div className="mx-auto max-w-content">
-          <SectionHeading eyebrow="Get In Touch" title="Send an Inquiry" />
-          <div className="mt-14">
-            <InquiryForm flowType="makeup" fields={MAKEUP_INQUIRY_FIELDS} heading="Your Inquiry" />
-          </div>
-        </div>
-      </ScrollFadeSection>
 
       {/* WhatsApp CTA */}
       <ScrollFadeSection className="px-6 pb-24 text-center md:pb-32">

@@ -5,6 +5,7 @@ import type {
   ColourAnalysisInquiryDetails,
   StitchingInquiryDetails,
 } from "@/types/inquiry";
+import { formatDisplayTime } from "./format";
 
 /** Digits only, per wa.me's expected format. */
 function sanitizePhoneForWaLink(rawNumber: string): string {
@@ -19,10 +20,7 @@ export function buildWaLink(message: string, destinationNumber: string): string 
 function formatEventsBlock(details: MakeupInquiryDetails): string {
   if (!details.events?.length) return "";
   return details.events
-    .map((event, index) => {
-      const type = event.eventType === "Other" ? event.customEventType || "Other" : event.eventType;
-      return `  ${index + 1}. ${type} — ${event.date} — ${event.areaVenue}, ${event.city}`;
-    })
+    .map((event, index) => `  ${index + 1}. ${event.date} at ${formatDisplayTime(event.timing)} — ${event.city}`)
     .join("\n");
 }
 

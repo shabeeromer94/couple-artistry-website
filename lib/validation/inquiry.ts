@@ -1,15 +1,11 @@
 import { z } from "zod";
-import { EVENT_TYPES } from "@/lib/config/eventTypes";
-import type { EventTypeValue } from "@/types/journey";
 import { utmSchema, whatsappNumberSchema } from "./shared";
 
 const journeyEventSchema = z.object({
   id: z.string(),
   date: z.string(),
-  eventType: z.enum(EVENT_TYPES as [EventTypeValue, ...EventTypeValue[]]),
-  customEventType: z.string().optional(),
+  timing: z.string(),
   city: z.string(),
-  areaVenue: z.string(),
 });
 
 const baseInquirySchema = z.object({

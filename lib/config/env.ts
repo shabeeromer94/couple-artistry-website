@@ -39,8 +39,25 @@ export const env = {
     "https://share.google/EUAbcsd5vH12nTZO6"
   ),
   siteUrl: readPublic("NEXT_PUBLIC_SITE_URL", "https://couple-artistry-website.vercel.app"),
+
+  // Google Calendar (real availability lookups) — server-only, never
+  // NEXT_PUBLIC_. Optional: until all three are set, checkEventAvailability
+  // and checkSlotAvailability fall back to their deterministic stub (see
+  // lib/utils/availabilityStub.ts / slotStub.ts and isGoogleCalendarConfigured
+  // below).
+  googleServiceAccountEmail: process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL ?? "",
+  googleServiceAccountPrivateKey: process.env.GOOGLE_SERVICE_ACCOUNT_PRIVATE_KEY ?? "",
+  googleCalendarId: process.env.GOOGLE_CALENDAR_ID ?? "",
 } as const;
 
 export function isSupabaseConfigured(): boolean {
   return env.supabaseUrl.length > 0 && env.supabaseAnonKey.length > 0;
+}
+
+export function isGoogleCalendarConfigured(): boolean {
+  return (
+    env.googleServiceAccountEmail.length > 0 &&
+    env.googleServiceAccountPrivateKey.length > 0 &&
+    env.googleCalendarId.length > 0
+  );
 }

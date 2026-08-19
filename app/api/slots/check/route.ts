@@ -35,27 +35,25 @@ export async function POST(request: Request) {
     );
 
     const checkedAt = new Date().toISOString();
-    let checkId = globalThis.crypto.randomUUID();
+    // Generated up front and inserted explicitly rather than read back via
+    // .select() — see the matching comment in /api/availability/check.
+    const checkId = globalThis.crypto.randomUUID();
 
     if (isSupabaseConfigured()) {
       try {
         const supabase = getSupabaseServerClient();
-        const { data, error } = await supabase
-          .from("slot_checks")
-          .insert({
-            requested_date: date,
-            slots,
-            session_id: sessionId ?? null,
-            utm_source: utm?.utm_source ?? null,
-            utm_medium: utm?.utm_medium ?? null,
-            utm_campaign: utm?.utm_campaign ?? null,
-            utm_content: utm?.utm_content ?? null,
-            utm_term: utm?.utm_term ?? null,
-          })
-          .select("id")
-          .single();
-        if (!error && data) checkId = data.id;
-        else if (error) console.error("slot_checks insert failed:", error.message);
+        const { error } = await supabase.from("slot_checks").insert({
+          id: checkId,
+          requested_date: date,
+          slots,
+          session_id: sessionId ?? null,
+          utm_source: utm?.utm_source ?? null,
+          utm_medium: utm?.utm_medium ?? null,
+          utm_campaign: utm?.utm_campaign ?? null,
+          utm_content: utm?.utm_content ?? null,
+          utm_term: utm?.utm_term ?? null,
+        });
+        if (error) console.error("slot_checks insert failed:", error.message);
       } catch (err) {
         console.error("slot_checks insert threw:", err);
       }

@@ -3,10 +3,8 @@ import type { AvailabilityStatus, OverallAvailabilityStatus } from "./journey";
 export interface AvailabilityCheckRequestEvent {
   id: string;
   date: string;
-  eventType: string;
-  customEventType?: string;
+  timing: string;
   city: string;
-  areaVenue: string;
 }
 
 export interface AvailabilityCheckRequest {

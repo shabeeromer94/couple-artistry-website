@@ -1,24 +1,3 @@
-import type { EventTypeValue } from "@/types/journey";
-
-export const EVENT_TYPES: EventTypeValue[] = [
-  "Wedding",
-  "Reception",
-  "Engagement",
-  "Sangeet",
-  "Mehendi",
-  "Haldi",
-  "Baby Shower",
-  "Seemantham",
-  "Photoshoot",
-  "Birthday",
-  "Other",
-];
-
-export const EVENT_TYPE_OPTIONS = EVENT_TYPES.map((value) => ({
-  label: value,
-  value,
-}));
-
 export const MAX_EVENTS = 6;
 
 export const EVENT_COUNT_OPTIONS = [

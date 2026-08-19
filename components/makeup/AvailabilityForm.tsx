@@ -14,7 +14,7 @@ import { EventFieldset } from "./EventFieldset";
 import { AvailabilityDisclaimer } from "./AvailabilityDisclaimer";
 
 function emptyEvent(): JourneyEvent {
-  return { id: generateId("evt"), date: "", eventType: "", city: "", areaVenue: "" };
+  return { id: generateId("evt"), date: "", timing: "", city: "" };
 }
 
 interface AvailabilityFormProps {
@@ -48,15 +48,7 @@ export function AvailabilityForm({ onResult }: AvailabilityFormProps) {
   }
 
   const isValid =
-    events.length > 0 &&
-    events.every(
-      (e) =>
-        e.date &&
-        e.eventType &&
-        e.city.trim() &&
-        e.areaVenue.trim() &&
-        (e.eventType !== "Other" || e.customEventType?.trim())
-    );
+    events.length > 0 && events.every((e) => e.date && e.timing && e.city.trim());
 
   async function handleSubmit() {
     if (!isValid) {
