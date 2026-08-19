@@ -12,9 +12,10 @@ interface GalleryProps {
 }
 
 // A horizontally-scrolling filmstrip rather than a tall stacked grid — every
-// item shares one height (varying by aspect ratio instead), so the whole
-// portfolio stays within one compact band and people scroll sideways to
-// browse instead of pulling the page down through a wall of images.
+// item is the same compact 3:4 frame (cropped face-first, not center), so
+// the whole portfolio stays within one tidy band, several tiles are visible
+// at once even on a phone, and people scroll sideways to browse instead of
+// pulling the page down through a wall of images.
 export function Gallery({ images }: GalleryProps) {
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
@@ -85,14 +86,15 @@ export function Gallery({ images }: GalleryProps) {
       <div
         ref={railRef}
         onScroll={updateScrollState}
-        className="no-scrollbar flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-smooth pb-2"
+        className="no-scrollbar flex snap-x snap-mandatory gap-2 overflow-x-auto scroll-smooth pb-2 sm:gap-4"
       >
         {images.map((image, index) => (
           <GalleryItem
             key={image.id}
             image={image}
             onOpen={() => setSelectedIndex(index)}
-            className="h-64 shrink-0 snap-start sm:h-80 md:h-96"
+            aspectRatio="portrait"
+            className="h-28 shrink-0 snap-start sm:h-56 md:h-72"
           />
         ))}
       </div>

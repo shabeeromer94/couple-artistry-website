@@ -60,7 +60,9 @@ export function GalleryCategories() {
                   transition={{ duration: 0.5, ease: EASE_EDITORIAL }}
                   className="overflow-hidden"
                 >
-                  <div className="px-6 py-8 sm:px-10">
+                  {/* No horizontal padding here — the rail stretches full
+                      width to use the space, unlike the band above it. */}
+                  <div className="py-8">
                     <Gallery images={group.images} />
                   </div>
                 </motion.div>

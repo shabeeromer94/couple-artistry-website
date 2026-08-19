@@ -17,10 +17,12 @@ interface GalleryItemProps {
   onOpen: () => void;
   /** Overrides the default "w-full" sizing — e.g. "h-full shrink-0" for a horizontal rail. */
   className?: string;
+  /** Overrides image.aspectRatio — e.g. force every tile in a rail to the same 3:4 frame. */
+  aspectRatio?: GalleryImage["aspectRatio"];
 }
 
-export function GalleryItem({ image, onOpen, className }: GalleryItemProps) {
-  const aspectClass = ASPECT_CLASS[image.aspectRatio ?? "portrait"];
+export function GalleryItem({ image, onOpen, className, aspectRatio }: GalleryItemProps) {
+  const aspectClass = ASPECT_CLASS[aspectRatio ?? image.aspectRatio ?? "portrait"];
 
   return (
     <motion.button
@@ -40,8 +42,10 @@ export function GalleryItem({ image, onOpen, className }: GalleryItemProps) {
           src={image.src}
           alt={image.alt}
           fill
-          sizes="(max-width: 640px) 45vw, 400px"
-          className="object-cover transition-transform duration-700 group-hover:scale-105"
+          sizes="(max-width: 640px) 30vw, 220px"
+          // Biased toward the top so a tight 3:4 crop keeps the face in
+          // frame, trimming from lower down (outfit/saree) first.
+          className="object-cover object-[center_22%] transition-transform duration-700 group-hover:scale-105"
         />
       ) : (
         <PlaceholderTile label={image.placeholderLabel} />
