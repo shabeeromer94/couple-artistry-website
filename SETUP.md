@@ -111,7 +111,12 @@ Everything placeholder is clearly labeled and centralized so swaps are mechanica
   | `GOOGLE_SERVICE_ACCOUNT_PRIVATE_KEY` | The `private_key` field — paste as-is, literal `\n` sequences included |
   | `GOOGLE_CALENDAR_ID` | Your calendar's Settings and sharing → Integrate calendar → Calendar ID |
 
-  As soon as all three are set, real checks kick in automatically — no other code change. A bridal event date is treated as unavailable if the calendar has *any* event that day (the artist(s) are booked for the whole day); a Colour Analysis slot is treated as unavailable only if an event overlaps that specific hour. Both are hardcoded to IST (+05:30).
+  As soon as all three are set, real checks kick in automatically — no other code change.
+
+  - **Makeup event dates** ask for the event's own start time (ceremony/function, not the makeup start) and check the 4 hours *before* it — `MAKEUP_SESSION_DURATION_HOURS` in `lib/config/eventTypes.ts` — against the calendar's actual events (not just free/busy), reading each overlapping event's **Location** field. An overlap at the *same* place isn't a conflict (that's just multiple people at one venue, same as any bridesmaids/group booking); it's only unavailable once two *different* other locations are already committed in that window — `MAX_SIMULTANEOUS_LOCATIONS`, since Ashi & Shabeer can split up and cover at most two places at once. This means every calendar block for a real booking should have its venue/city filled into the event's Location field, or it's counted as an unknown location (conservatively treated as its own conflict).
+  - **Colour Analysis slots** are treated as unavailable only if an event overlaps that specific hour — no location logic, since sessions all happen at one place.
+
+  Both are hardcoded to IST (+05:30).
 
 - **WhatsApp handoff** uses `wa.me` deep links (no WhatsApp Business API integration). This is standard practice and works well as-is — upgrading to the official API later is a backend-only change to `lib/utils/whatsapp.ts` and the `/api/inquiries` route.
 

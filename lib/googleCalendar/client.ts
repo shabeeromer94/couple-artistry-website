@@ -58,3 +58,43 @@ export async function getBusyIntervals(
   });
   return res.data.calendars?.[calendarId]?.busy ?? [];
 }
+
+export interface CalendarEventSummary {
+  id: string;
+  summary?: string | null;
+  /** The event's Location field — where Ashi & Shabeer note the venue/city when they block a booking. */
+  location?: string | null;
+}
+
+/**
+ * Events overlapping [timeMinISO, timeMaxISO) on a calendar, with enough
+ * detail (location, title) to tell *where* a conflict is — unlike
+ * getBusyIntervals, which only says *whether* one exists. Used for the
+ * location-aware Makeup availability check (see availabilityStub.ts), which
+ * needs to know if an overlapping booking is at the same place or not.
+ * Requires the same "See all event details" calendar sharing permission the
+ * setup guide already asks for (a free/busy-only share wouldn't expose
+ * location or title).
+ */
+export async function getOverlappingEvents(
+  calendarId: string,
+  timeMinISO: string,
+  timeMaxISO: string
+): Promise<CalendarEventSummary[]> {
+  if (!calendarId) {
+    throw new Error("Google Calendar is not configured — set GOOGLE_CALENDAR_ID.");
+  }
+  const calendar = google.calendar({ version: "v3", auth: getAuth() });
+  const res = await calendar.events.list({
+    calendarId,
+    timeMin: timeMinISO,
+    timeMax: timeMaxISO,
+    singleEvents: true,
+    orderBy: "startTime",
+  });
+  return (res.data.items ?? []).map((item) => ({
+    id: item.id ?? "",
+    summary: item.summary,
+    location: item.location,
+  }));
+}

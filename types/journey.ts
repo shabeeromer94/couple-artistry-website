@@ -4,7 +4,7 @@
 export interface JourneyEvent {
   id: string;
   date: string; // ISO yyyy-mm-dd
-  timing: string; // "HH:MM" 24h, from a time input — when on the date the look is needed
+  timing: string; // "HH:MM" 24h — the event's own start time (ceremony/function), not the makeup start time
   city: string;
 }
 

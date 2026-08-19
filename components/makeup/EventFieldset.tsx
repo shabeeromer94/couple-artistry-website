@@ -42,7 +42,7 @@ export function EventFieldset({ index, value, onChange, onRemove }: EventFieldse
         </label>
 
         <label className="block">
-          <span className={labelClass}>Timing</span>
+          <span className={labelClass}>Event Start Time</span>
           <input
             type="time"
             value={value.timing}
@@ -50,6 +50,9 @@ export function EventFieldset({ index, value, onChange, onRemove }: EventFieldse
             className={fieldClass}
             required
           />
+          <span className="mt-1 block text-xs text-charcoal-light/70">
+            When the ceremony/function itself begins — we&rsquo;ll block the 4 hours before this for hair &amp; makeup.
+          </span>
         </label>
 
         <label className="block sm:col-span-2">

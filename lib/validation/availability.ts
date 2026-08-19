@@ -4,7 +4,7 @@ import { utmSchema } from "./shared";
 export const availabilityEventSchema = z.object({
   id: z.string().min(1),
   date: z.string().min(1, "Date is required"),
-  timing: z.string().min(1, "Timing is required"),
+  timing: z.string().min(1, "Event start time is required"),
   city: z.string().min(1, "City is required"),
 });
 
