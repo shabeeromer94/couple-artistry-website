@@ -1,16 +1,22 @@
 "use client";
 
+import Image from "next/image";
 import { motion } from "framer-motion";
 import { scrollFadeUpProps } from "@/lib/motion";
-import { PlaceholderTile } from "@/components/shared/PlaceholderTile";
 import { ScrollFadeSection } from "@/components/shared/ScrollFadeSection";
 
 export function BridalPhilosophy() {
   return (
     <ScrollFadeSection className="py-24 md:py-32">
       <div className="mx-auto grid max-w-content grid-cols-1 items-center gap-12 px-6 md:grid-cols-2">
-        <motion.div {...scrollFadeUpProps} className="aspect-[4/5] w-full overflow-hidden">
-          <PlaceholderTile label="Ashi & Shabeer" />
+        <motion.div {...scrollFadeUpProps} className="relative aspect-[4/5] w-full overflow-hidden">
+          <Image
+            src="/images/about/ashi-and-shabeer.jpg"
+            alt="Ashi & Shabeer, founders of Couple Artistry by Shaash"
+            fill
+            sizes="(max-width: 768px) 100vw, 50vw"
+            className="object-cover"
+          />
         </motion.div>
         <motion.div {...scrollFadeUpProps}>
           <p className="mb-3 text-xs uppercase tracking-[0.25em] text-rose-dark">About Us</p>
