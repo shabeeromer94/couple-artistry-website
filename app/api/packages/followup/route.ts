@@ -7,7 +7,7 @@ import { buildWaLink } from "@/lib/utils/whatsapp";
 import { formatPackageFollowUpClientMessage, formatPackageFollowUpOwnerNudge } from "@/lib/utils/notifications";
 
 // Called by QStash — never directly by a visitor or the site's own
-// frontend — PACKAGE_VIEW_FOLLOWUP_DELAY_HOURS after a "View Packages"
+// frontend — PACKAGE_VIEW_FOLLOWUP_DELAY_MINUTES after a "View Packages"
 // click (see app/api/packages/view/route.ts). Every request's signature is
 // verified against the raw body before anything else runs.
 export async function POST(request: Request) {

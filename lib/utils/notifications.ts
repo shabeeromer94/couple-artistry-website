@@ -72,7 +72,7 @@ export function formatPackageFollowUpOwnerNudge(payload: {
   const lines: string[] = [];
   lines.push("Follow-up reminder — Makeup");
   lines.push("");
-  lines.push(`${payload.fullName} viewed packages a few hours ago and hasn't reached out yet.`);
+  lines.push(`${payload.fullName} viewed packages and hasn't reached out yet.`);
   lines.push(`WhatsApp: ${payload.whatsappNumber}`);
   if (payload.selectedPackageTier) {
     lines.push(`Package they looked at: ${payload.selectedPackageTier}`);

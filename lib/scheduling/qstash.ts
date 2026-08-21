@@ -9,23 +9,23 @@ import { env, isQStashConfigured } from "@/lib/config/env";
 // (see app/api/packages/view/route.ts and app/api/packages/followup/route.ts).
 
 /**
- * Schedules `url` to be called with `body` (as JSON) after `delayHours`.
+ * Schedules `url` to be called with `body` (as JSON) after `delaySeconds`.
  * A no-op — logged, not thrown — when QStash isn't configured, so a missing
  * setup step never blocks the visitor's response.
  */
 export async function scheduleDelayedCall(
   url: string,
   body: Record<string, unknown>,
-  delayHours: number
+  delaySeconds: number
 ): Promise<void> {
   if (!isQStashConfigured()) return;
 
   try {
     const client = new Client({ token: env.qstashToken });
-    // Seconds, as a plain number — QStash's `delay` string variants only
-    // type-check for integer/bigint literals, which a variable hour count
+    // Plain number of seconds — QStash's `delay` string variants only
+    // type-check for integer/bigint literals, which a variable count
     // isn't guaranteed to satisfy at compile time.
-    await client.publishJSON({ url, body, delay: Math.round(delayHours * 3600) });
+    await client.publishJSON({ url, body, delay: Math.round(delaySeconds) });
   } catch (err) {
     console.error("QStash schedule failed:", err);
   }

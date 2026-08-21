@@ -3,7 +3,7 @@ import { packageViewRequestSchema } from "@/lib/validation/packageViews";
 import { getSupabaseServerClient } from "@/lib/supabase/server";
 import { isSupabaseConfigured, env } from "@/lib/config/env";
 import { scheduleDelayedCall } from "@/lib/scheduling/qstash";
-import { PACKAGE_VIEW_FOLLOWUP_DELAY_HOURS } from "@/lib/config/packageFollowUp";
+import { PACKAGE_VIEW_FOLLOWUP_DELAY_MINUTES } from "@/lib/config/packageFollowUp";
 
 // Fired once, when a visitor clicks "View Packages" on the Makeup page
 // (name/WhatsApp number already known by then, from the availability
@@ -60,7 +60,7 @@ export async function POST(request: Request) {
     await scheduleDelayedCall(
       `${env.siteUrl}/api/packages/followup`,
       { viewId },
-      PACKAGE_VIEW_FOLLOWUP_DELAY_HOURS
+      PACKAGE_VIEW_FOLLOWUP_DELAY_MINUTES * 60
     );
   }
 
