@@ -3,6 +3,7 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import type {
   AvailabilityCheckResult,
+  JourneyContact,
   JourneyContextValue,
   JourneyEvent,
   SelectedPackage,
@@ -15,6 +16,7 @@ const UTM_STORAGE_KEY = "ca_utm_v1";
 
 interface StoredJourney {
   events: JourneyEvent[];
+  contact?: JourneyContact;
   availabilityResult?: AvailabilityCheckResult;
   selectedPackage?: SelectedPackage;
   selectedSlot?: SelectedSlot;
@@ -46,6 +48,7 @@ const JourneyContext = createContext<JourneyContextValue | undefined>(undefined)
 
 export function JourneyProvider({ children }: { children: React.ReactNode }) {
   const [events, setEventsState] = useState<JourneyEvent[]>([]);
+  const [contact, setContactState] = useState<JourneyContact | undefined>(undefined);
   const [availabilityResult, setAvailabilityResultState] = useState<
     AvailabilityCheckResult | undefined
   >(undefined);
@@ -60,6 +63,7 @@ export function JourneyProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     const stored = readStoredJourney();
     setEventsState(stored.events ?? []);
+    setContactState(stored.contact);
     setAvailabilityResultState(stored.availabilityResult);
     setSelectedPackageState(stored.selectedPackage);
     setSelectedSlotState(stored.selectedSlot);
@@ -73,11 +77,12 @@ export function JourneyProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     if (!hydrated || typeof window === "undefined") return;
-    const toStore: StoredJourney = { events, availabilityResult, selectedPackage, selectedSlot };
+    const toStore: StoredJourney = { events, contact, availabilityResult, selectedPackage, selectedSlot };
     window.sessionStorage.setItem(JOURNEY_STORAGE_KEY, JSON.stringify(toStore));
-  }, [events, availabilityResult, selectedPackage, selectedSlot, hydrated]);
+  }, [events, contact, availabilityResult, selectedPackage, selectedSlot, hydrated]);
 
   const setEvents = useCallback((next: JourneyEvent[]) => setEventsState(next), []);
+  const setContact = useCallback((next: JourneyContact | undefined) => setContactState(next), []);
   const setAvailabilityResult = useCallback(
     (next: AvailabilityCheckResult | undefined) => setAvailabilityResultState(next),
     []
@@ -101,6 +106,8 @@ export function JourneyProvider({ children }: { children: React.ReactNode }) {
     () => ({
       events,
       setEvents,
+      contact,
+      setContact,
       availabilityResult,
       setAvailabilityResult,
       selectedPackage,
@@ -113,6 +120,8 @@ export function JourneyProvider({ children }: { children: React.ReactNode }) {
     [
       events,
       setEvents,
+      contact,
+      setContact,
       availabilityResult,
       setAvailabilityResult,
       selectedPackage,

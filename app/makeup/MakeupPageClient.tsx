@@ -1,19 +1,19 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { useJourney } from "@/lib/context/JourneyProvider";
 import { scrollFadeUpProps } from "@/lib/motion";
 import { getTestimonials } from "@/lib/config/testimonials";
 import { MAKEUP_VALUE_PROPS } from "@/lib/config/valueProps";
-import { MAKEUP_INQUIRY_FIELDS } from "@/lib/config/inquiryFields";
+import { env } from "@/lib/config/env";
+import { buildWaLink } from "@/lib/utils/whatsapp";
 import { SectionHeading } from "@/components/shared/SectionHeading";
 import { ValueProps } from "@/components/shared/ValueProps";
 import { ScrollFadeSection } from "@/components/shared/ScrollFadeSection";
 import { TestimonialSection } from "@/components/shared/TestimonialSection";
 import { PackageGrid } from "@/components/shared/PackageGrid";
-import { InquiryForm } from "@/components/shared/InquiryForm";
 import { WhatsAppButton } from "@/components/shared/WhatsAppButton";
 import { GalleryCategories } from "@/components/makeup/GalleryCategories";
 import { AddOnsAndTrial } from "@/components/makeup/AddOnsAndTrial";
@@ -30,7 +30,6 @@ export default function MakeupPageClient() {
   const journey = useJourney();
   const resultRef = useRef<HTMLDivElement>(null);
   const packagesRef = useRef<HTMLDivElement>(null);
-  const inquiryRef = useRef<HTMLDivElement>(null);
   // Pricing stays hidden until a bride has checked her date — she either
   // lands here because her date is open, or explicitly asks to see pricing
   // anyway after an unavailable result. Pre-seeded true if she already did
@@ -38,15 +37,75 @@ export default function MakeupPageClient() {
   const [packagesUnlocked, setPackagesUnlocked] = useState(
     () => journey.availabilityResult?.overallStatus === "available"
   );
+  // The package_views row id from /api/packages/view, once the on-page
+  // "View Packages" click has been logged — referenced by handleSelectTier
+  // to mark "already reached out" if a tier gets picked afterward, so the
+  // delayed follow-up reminder (see SETUP.md §8) skips them.
+  const packageViewIdRef = useRef<string | null>(null);
+
+  // A plain "?unlock=packages" link straight to packages — this is the link
+  // sent in the owner's WhatsApp notification (see /api/availability/check)
+  // so they can forward it to a bride whenever suits, without her needing
+  // to redo the availability check on a fresh visit/device.
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const params = new URLSearchParams(window.location.search);
+    if (params.get("unlock") === "packages") {
+      setPackagesUnlocked(true);
+      setTimeout(() => scrollTo(packagesRef), 300);
+    }
+  }, []);
 
   function handleViewPackages() {
     setPackagesUnlocked(true);
     setTimeout(() => scrollTo(packagesRef), 100);
+
+    // Log the view (fire-and-forget — never blocks the on-page reveal) so a
+    // delayed "haven't heard from you" reminder can go out later if this
+    // visitor doesn't reach out on their own. Only when we actually know
+    // who's viewing — the owner-forwarded "?unlock=packages" link skips
+    // this on purpose (see the useEffect above).
+    if (journey.contact) {
+      fetch("/api/packages/view", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          fullName: journey.contact.fullName,
+          whatsappNumber: journey.contact.whatsappNumber,
+          availabilityCheckId: journey.availabilityResult?.checkId,
+          utm: journey.utm,
+        }),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          if (data?.viewId) packageViewIdRef.current = data.viewId;
+        })
+        .catch(() => undefined);
+    }
   }
 
+  // No more on-page inquiry form to route a selection into — name and
+  // WhatsApp number are already captured at the availability-check step, so
+  // picking a tier just opens WhatsApp with it pre-filled for whoever wants
+  // to reach out right away (everyone else is already in the owner's hands
+  // via the availability-check notification, and the delayed reminder if
+  // they don't act on that either).
   function handleSelectTier(category: PricingCategoryKey, tier: PricingTier) {
     journey.setSelectedPackage({ category, tierId: tier.id, tierName: tier.name });
-    setTimeout(() => scrollTo(inquiryRef), 100);
+
+    // They've reached out themselves — the delayed reminder for this view
+    // would be redundant, so mark it skipped.
+    if (packageViewIdRef.current) {
+      fetch("/api/packages/interest", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ viewId: packageViewIdRef.current, category, tierName: tier.name }),
+      }).catch(() => undefined);
+    }
+
+    const namePart = journey.contact?.fullName ? `My name is ${journey.contact.fullName}. ` : "";
+    const message = `Hi Couple Artistry! ${namePart}I'm interested in the ${tier.name} package.`;
+    window.open(buildWaLink(message, env.whatsappNumber), "_blank", "noopener,noreferrer");
   }
 
   return (
@@ -57,12 +116,12 @@ export default function MakeupPageClient() {
           regardless of crop. */}
       <ScrollFadeSection className="relative -mt-24 h-[65vh] min-h-[440px] w-full overflow-hidden sm:h-[75vh] md:h-[88vh]">
         <Image
-          src="/images/makeup/hero.jpg"
-          alt="Bridal makeup and hairstyling by Couple Artistry by Shaash"
+          src="/images/makeup/hero-2.jpg"
+          alt="Bridal makeup application by Couple Artistry by Shaash"
           fill
           priority
           sizes="100vw"
-          className="object-cover object-[60%_25%]"
+          className="object-cover object-[52%_28%]"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-charcoal/85 via-charcoal/15 to-transparent" />
         <div className="relative z-10 flex h-full flex-col justify-end px-6 pb-10 sm:px-10 sm:pb-14 md:px-16 md:pb-16">
@@ -149,20 +208,6 @@ export default function MakeupPageClient() {
 
           <BookingInfo />
         </>
-      )}
-
-      {/* Inquiry — only once a date's been checked, so a bride reaches the
-          form with an availability result (and possibly a package) already
-          in hand, instead of being asked to inquire blind. */}
-      {journey.availabilityResult && (
-        <ScrollFadeSection ref={inquiryRef} className="scroll-mt-24 px-6 py-24 md:py-32">
-          <div className="mx-auto max-w-content">
-            <SectionHeading eyebrow="Get In Touch" title="Send an Inquiry" />
-            <div className="mt-14">
-              <InquiryForm flowType="makeup" fields={MAKEUP_INQUIRY_FIELDS} heading="Your Inquiry" />
-            </div>
-          </div>
-        </ScrollFadeSection>
       )}
 
       {/* WhatsApp CTA */}

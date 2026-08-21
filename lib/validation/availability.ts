@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { utmSchema } from "./shared";
+import { utmSchema, whatsappNumberSchema } from "./shared";
 
 export const availabilityEventSchema = z.object({
   id: z.string().min(1),
@@ -9,6 +9,8 @@ export const availabilityEventSchema = z.object({
 });
 
 export const availabilityCheckRequestSchema = z.object({
+  fullName: z.string().min(2, "Enter your full name"),
+  whatsappNumber: whatsappNumberSchema,
   events: z.array(availabilityEventSchema).min(1).max(6),
   sessionId: z.string().optional(),
   utm: utmSchema,

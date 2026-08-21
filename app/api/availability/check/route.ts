@@ -2,8 +2,10 @@ import { NextResponse } from "next/server";
 import { availabilityCheckRequestSchema } from "@/lib/validation/availability";
 import { checkEventAvailability } from "@/lib/utils/availabilityStub";
 import { getSupabaseServerClient } from "@/lib/supabase/server";
-import { isSupabaseConfigured } from "@/lib/config/env";
+import { isSupabaseConfigured, env } from "@/lib/config/env";
 import { AVAILABILITY_DISCLAIMER } from "@/lib/config/copy";
+import { formatAvailabilityNotification } from "@/lib/utils/notifications";
+import { sendOwnerNotification } from "@/lib/ownerNotify/telegram";
 import type { OverallAvailabilityStatus } from "@/types/journey";
 
 // STUB CONTRACT: this route never touches a real calendar. It exists so the
@@ -29,7 +31,7 @@ export async function POST(request: Request) {
   }
 
   try {
-    const { events, sessionId, utm } = parsed.data;
+    const { fullName, whatsappNumber, events, sessionId, utm } = parsed.data;
 
     const results = await Promise.all(
       events.map(async (event) => ({
@@ -44,11 +46,6 @@ export async function POST(request: Request) {
       availableCount === results.length ? "available" : availableCount === 0 ? "unavailable" : "partial";
 
     const checkedAt = new Date().toISOString();
-    // Generated up front and inserted explicitly, rather than read back via
-    // .select() after insert — anon has insert-only RLS on this table (by
-    // design: these logs shouldn't be publicly readable), and .select()
-    // after insert requires Postgres to RETURNING the row, which needs a
-    // SELECT policy anon doesn't have and shouldn't get.
     const checkId = globalThis.crypto.randomUUID();
 
     if (isSupabaseConfigured()) {
@@ -56,6 +53,8 @@ export async function POST(request: Request) {
         const supabase = getSupabaseServerClient();
         const { error } = await supabase.from("availability_checks").insert({
           id: checkId,
+          full_name: fullName,
+          whatsapp_number: whatsappNumber,
           events,
           event_count: events.length,
           overall_status: overallStatus,
@@ -71,6 +70,28 @@ export async function POST(request: Request) {
       } catch (err) {
         console.error("availability_checks insert threw:", err);
       }
+    }
+
+    // Silent backend notification to the owner (via Telegram — see
+    // lib/ownerNotify/telegram.ts). Never surfaced to or triggered by the
+    // visitor, and a failure here never affects the response below — it's
+    // a no-op until Telegram credentials are set.
+    try {
+      const message = formatAvailabilityNotification({
+        fullName,
+        whatsappNumber,
+        events: events.map((event, index) => ({
+          date: event.date,
+          timing: event.timing,
+          city: event.city,
+          status: results[index].status,
+        })),
+        overallStatus,
+        packagesUrl: `${env.siteUrl}/makeup?unlock=packages`,
+      });
+      await sendOwnerNotification(message);
+    } catch (err) {
+      console.error("owner notification failed:", err);
     }
 
     return NextResponse.json({

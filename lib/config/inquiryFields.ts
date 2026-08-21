@@ -3,17 +3,9 @@ import { CLASS_LEVELS, CLASS_TIMING_OPTIONS, CLASS_TYPES } from "./classes";
 
 // Name / WhatsApp / Email / Additional Message are fixed base fields
 // rendered directly by InquiryForm for every flow — these arrays supply
-// only what varies per page.
-
-export const MAKEUP_INQUIRY_FIELDS: FieldSchemaEntry[] = [
-  {
-    name: "eventsSummary",
-    label: "Your Event(s)",
-    type: "textarea",
-    prefillFromContext: "events",
-    placeholder: "Auto-filled from your availability check — edit if needed.",
-  },
-];
+// only what varies per page. Makeup has no entry here — its "Get In Touch"
+// form was removed; name and WhatsApp number are captured directly on the
+// availability check instead (see components/makeup/AvailabilityForm.tsx).
 
 export const CLASSES_INQUIRY_FIELDS: FieldSchemaEntry[] = [
   {

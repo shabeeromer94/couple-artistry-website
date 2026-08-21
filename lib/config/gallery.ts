@@ -64,6 +64,7 @@ const MAKEUP_BRIDAL_LOOKS = buildRealGroup("makeup", "bridal-looks", "Bridal Loo
   { file: "img-10.jpg", aspectRatio: "portrait" },
   { file: "img-11.jpg", aspectRatio: "square" },
   { file: "img-12.jpg", aspectRatio: "landscape" },
+  { file: "img-13.jpg", aspectRatio: "portrait" },
 ]);
 
 const MAKEUP_MAKEUP_AND_HAIR = buildRealGroup("makeup", "makeup-and-hair", "Makeup & Hair", "Makeup and Hair", [

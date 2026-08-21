@@ -48,6 +48,20 @@ export const env = {
   googleServiceAccountEmail: process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL ?? "",
   googleServiceAccountPrivateKey: process.env.GOOGLE_SERVICE_ACCOUNT_PRIVATE_KEY ?? "",
   googleCalendarId: process.env.GOOGLE_CALENDAR_ID ?? "",
+
+  // Telegram (silent backend notification to the owner every time someone
+  // checks their date) — server-only, never NEXT_PUBLIC_. Optional: until
+  // both are set, sendOwnerNotification() is a no-op.
+  telegramBotToken: process.env.TELEGRAM_BOT_TOKEN ?? "",
+  telegramChatId: process.env.TELEGRAM_CHAT_ID ?? "",
+
+  // Upstash QStash (delayed "package view" follow-up reminder) — server-only,
+  // never NEXT_PUBLIC_. Optional: until all three are set, viewing packages
+  // is tracked (if Supabase is configured) but no delayed reminder is
+  // scheduled. See lib/scheduling/qstash.ts.
+  qstashToken: process.env.QSTASH_TOKEN ?? "",
+  qstashCurrentSigningKey: process.env.QSTASH_CURRENT_SIGNING_KEY ?? "",
+  qstashNextSigningKey: process.env.QSTASH_NEXT_SIGNING_KEY ?? "",
 } as const;
 
 export function isSupabaseConfigured(): boolean {
@@ -59,5 +73,17 @@ export function isGoogleCalendarConfigured(): boolean {
     env.googleServiceAccountEmail.length > 0 &&
     env.googleServiceAccountPrivateKey.length > 0 &&
     env.googleCalendarId.length > 0
+  );
+}
+
+export function isTelegramConfigured(): boolean {
+  return env.telegramBotToken.length > 0 && env.telegramChatId.length > 0;
+}
+
+export function isQStashConfigured(): boolean {
+  return (
+    env.qstashToken.length > 0 &&
+    env.qstashCurrentSigningKey.length > 0 &&
+    env.qstashNextSigningKey.length > 0
   );
 }

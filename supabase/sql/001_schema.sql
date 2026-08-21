@@ -26,6 +26,8 @@ create extension if not exists pgcrypto;
 create table if not exists public.availability_checks (
   id uuid primary key default gen_random_uuid(),
   created_at timestamptz not null default now(),
+  full_name text not null,
+  whatsapp_number text not null,
   events jsonb not null,                 -- [{ id, date, timing, city }]
   event_count integer not null,
   overall_status text not null check (overall_status in ('available', 'unavailable', 'partial')),

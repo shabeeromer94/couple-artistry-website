@@ -23,6 +23,8 @@ interface AvailabilityFormProps {
 
 export function AvailabilityForm({ onResult }: AvailabilityFormProps) {
   const journey = useJourney();
+  const [fullName, setFullName] = useState(journey.contact?.fullName ?? "");
+  const [whatsappNumber, setWhatsappNumber] = useState(journey.contact?.whatsappNumber ?? "");
   const [countChoice, setCountChoice] = useState<EventCountChoice | null>(null);
   const [events, setEvents] = useState<JourneyEvent[]>([]);
   const [submitting, setSubmitting] = useState(false);
@@ -48,11 +50,14 @@ export function AvailabilityForm({ onResult }: AvailabilityFormProps) {
   }
 
   const isValid =
-    events.length > 0 && events.every((e) => e.date && e.timing && e.city.trim());
+    fullName.trim().length > 1 &&
+    whatsappNumber.trim().length > 0 &&
+    events.length > 0 &&
+    events.every((e) => e.date && e.timing && e.city.trim());
 
   async function handleSubmit() {
     if (!isValid) {
-      setError("Please complete every field for each event.");
+      setError("Please enter your name and WhatsApp number, and complete every field for each event.");
       return;
     }
     setError(null);
@@ -61,7 +66,7 @@ export function AvailabilityForm({ onResult }: AvailabilityFormProps) {
       const res = await fetch("/api/availability/check", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ events, utm: journey.utm }),
+        body: JSON.stringify({ fullName, whatsappNumber, events, utm: journey.utm }),
       });
       const data: AvailabilityCheckResponse | { success: false; error: string } = await res.json();
       if (!data.success) {
@@ -69,6 +74,7 @@ export function AvailabilityForm({ onResult }: AvailabilityFormProps) {
         return;
       }
       journey.setEvents(events);
+      journey.setContact({ fullName, whatsappNumber });
       journey.setAvailabilityResult(data);
       onResult();
     } catch {
@@ -80,6 +86,30 @@ export function AvailabilityForm({ onResult }: AvailabilityFormProps) {
 
   return (
     <motion.div {...scrollFadeUpProps} className="mx-auto max-w-2xl space-y-10">
+      <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
+        <label className="block">
+          <span className="mb-2 block text-xs uppercase tracking-[0.15em] text-charcoal-light">Your Name</span>
+          <input
+            type="text"
+            value={fullName}
+            onChange={(e) => setFullName(e.target.value)}
+            className="w-full border-b border-charcoal/25 bg-transparent py-2 text-sm text-charcoal placeholder:text-charcoal-light/50 focus:border-wine focus:outline-none"
+            required
+          />
+        </label>
+        <label className="block">
+          <span className="mb-2 block text-xs uppercase tracking-[0.15em] text-charcoal-light">WhatsApp Number</span>
+          <input
+            type="tel"
+            value={whatsappNumber}
+            onChange={(e) => setWhatsappNumber(e.target.value)}
+            placeholder="+91 XXXXX XXXXX"
+            className="w-full border-b border-charcoal/25 bg-transparent py-2 text-sm text-charcoal placeholder:text-charcoal-light/50 focus:border-wine focus:outline-none"
+            required
+          />
+        </label>
+      </div>
+
       <div>
         <p className="mb-4 text-center text-xs uppercase tracking-[0.2em] text-charcoal-light">
           How many events?

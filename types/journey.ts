@@ -41,9 +41,17 @@ export interface SelectedSlot {
   checkId?: string;
 }
 
+/** Captured once, directly on the availability check form — reused wherever the visitor's name/number is useful afterward (e.g. the package-selection WhatsApp CTA). */
+export interface JourneyContact {
+  fullName: string;
+  whatsappNumber: string;
+}
+
 export interface JourneyContextValue {
   events: JourneyEvent[];
   setEvents: (events: JourneyEvent[]) => void;
+  contact?: JourneyContact;
+  setContact: (contact: JourneyContact | undefined) => void;
   availabilityResult?: AvailabilityCheckResult;
   setAvailabilityResult: (result: AvailabilityCheckResult | undefined) => void;
   selectedPackage?: SelectedPackage;
