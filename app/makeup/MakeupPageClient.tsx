@@ -10,6 +10,7 @@ import { MAKEUP_VALUE_PROPS } from "@/lib/config/valueProps";
 import { env } from "@/lib/config/env";
 import { buildWaLink, formatPackageEnquiryMessage } from "@/lib/utils/whatsapp";
 import { SectionHeading } from "@/components/shared/SectionHeading";
+import { LuxuryWaves } from "@/components/shared/LuxuryWaves";
 import { ValueProps } from "@/components/shared/ValueProps";
 import { ScrollFadeSection } from "@/components/shared/ScrollFadeSection";
 import { TestimonialSection } from "@/components/shared/TestimonialSection";
@@ -155,8 +156,9 @@ export default function MakeupPageClient() {
       </ScrollFadeSection>
 
       {/* Why Choose Couple Artistry */}
-      <ScrollFadeSection className="px-6 py-24 md:py-32">
-        <div className="mx-auto max-w-content">
+      <ScrollFadeSection className="relative overflow-hidden px-6 py-24 md:py-32">
+        <LuxuryWaves />
+        <div className="relative z-10 mx-auto max-w-content">
           <SectionHeading eyebrow="Why Choose Us" title="Why Choose Couple Artistry" />
           <div className="mt-14">
             <ValueProps items={MAKEUP_VALUE_PROPS} />
@@ -166,8 +168,9 @@ export default function MakeupPageClient() {
 
       {/* Portfolio Gallery — by category, closed by default; click a
           category to reveal its own gallery. */}
-      <ScrollFadeSection className="px-6 py-24 md:py-32">
-        <div className="mx-auto max-w-content">
+      <ScrollFadeSection className="relative overflow-hidden px-6 py-24 md:py-32">
+        <LuxuryWaves />
+        <div className="relative z-10 mx-auto max-w-content">
           <SectionHeading eyebrow="Portfolio" title="A Look at Our Work" />
           <div className="mt-14">
             <GalleryCategories />
