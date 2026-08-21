@@ -23,10 +23,10 @@ export function Steps({ steps }: StepsProps) {
     >
       {steps.map((step, index) => (
         <motion.li key={step.title} variants={scrollFadeUpProps.variants} className="text-left">
-          <span className="font-display text-4xl text-rose/60">
+          <span className="font-display text-4xl font-semibold text-rose">
             {String(index + 1).padStart(2, "0")}
           </span>
-          <h3 className="mt-3 font-display text-lg text-charcoal">{step.title}</h3>
+          <h3 className="mt-3 font-display text-lg font-semibold text-charcoal">{step.title}</h3>
           <p className="mt-2 text-sm leading-relaxed text-charcoal-light">{step.description}</p>
         </motion.li>
       ))}

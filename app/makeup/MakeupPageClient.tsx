@@ -8,7 +8,7 @@ import { scrollFadeUpProps } from "@/lib/motion";
 import { getTestimonials } from "@/lib/config/testimonials";
 import { MAKEUP_VALUE_PROPS } from "@/lib/config/valueProps";
 import { env } from "@/lib/config/env";
-import { buildWaLink } from "@/lib/utils/whatsapp";
+import { buildWaLink, formatPackageEnquiryMessage } from "@/lib/utils/whatsapp";
 import { SectionHeading } from "@/components/shared/SectionHeading";
 import { ValueProps } from "@/components/shared/ValueProps";
 import { ScrollFadeSection } from "@/components/shared/ScrollFadeSection";
@@ -46,13 +46,21 @@ export default function MakeupPageClient() {
   // A plain "?unlock=packages" link straight to packages — this is the link
   // sent in the owner's WhatsApp notification (see /api/availability/check)
   // so they can forward it to a bride whenever suits, without her needing
-  // to redo the availability check on a fresh visit/device.
+  // to redo the availability check on a fresh visit/device. Adding
+  // "&tier=<id>" (the link included in each package's own WhatsApp enquiry
+  // message, for her to re-open later) additionally scrolls straight to
+  // that one package card once packages are unlocked and rendered.
   useEffect(() => {
     if (typeof window === "undefined") return;
     const params = new URLSearchParams(window.location.search);
     if (params.get("unlock") === "packages") {
       setPackagesUnlocked(true);
-      setTimeout(() => scrollTo(packagesRef), 300);
+      const tierId = params.get("tier");
+      setTimeout(() => {
+        const tierEl = tierId ? document.getElementById(tierId) : null;
+        if (tierEl) tierEl.scrollIntoView({ behavior: "smooth", block: "center" });
+        else scrollTo(packagesRef);
+      }, 300);
     }
   }, []);
 
@@ -103,8 +111,13 @@ export default function MakeupPageClient() {
       }).catch(() => undefined);
     }
 
-    const namePart = journey.contact?.fullName ? `My name is ${journey.contact.fullName}. ` : "";
-    const message = `Hi Couple Artistry! ${namePart}I'm interested in the ${tier.name} package.`;
+    const message = formatPackageEnquiryMessage({
+      tierName: tier.name,
+      fullName: journey.contact?.fullName,
+      whatsappNumber: journey.contact?.whatsappNumber,
+      events: journey.events,
+      packageUrl: `${env.siteUrl}/makeup?unlock=packages&tier=${tier.id}`,
+    });
     window.open(buildWaLink(message, env.whatsappNumber), "_blank", "noopener,noreferrer");
   }
 
@@ -168,7 +181,7 @@ export default function MakeupPageClient() {
           date surfaces both the availability status and, right after, the
           packages and pricing that apply, so there's no separate "pricing"
           section repeating the same "check your date first" message. */}
-      <ScrollFadeSection className="px-6 py-24 md:py-32">
+      <ScrollFadeSection disableFade className="px-6 py-24 md:py-32">
         <div className="mx-auto max-w-content">
           <SectionHeading
             eyebrow="Availability & Packages"
@@ -183,7 +196,7 @@ export default function MakeupPageClient() {
 
       {/* Availability Result */}
       {journey.availabilityResult && (
-        <ScrollFadeSection ref={resultRef} className="scroll-mt-24 px-6 py-24 md:py-32">
+        <ScrollFadeSection disableFade ref={resultRef} className="scroll-mt-24 px-6 py-24 md:py-32">
           <div className="mx-auto max-w-content">
             <AvailabilityResult result={journey.availabilityResult} onViewPackages={handleViewPackages} />
           </div>

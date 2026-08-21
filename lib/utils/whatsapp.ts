@@ -25,6 +25,39 @@ function formatEventsBlock(details: MakeupInquiryDetails): string {
 }
 
 /**
+ * The message pre-filled when a visitor taps "Connect on WhatsApp" on a
+ * specific package tier (see app/makeup/MakeupPageClient.tsx) — her name,
+ * number, and event dates/locations already known from the availability
+ * check, plus a link back to that exact package for her own reference.
+ * Client-side (this is the visitor's own outbound wa.me link, not a server
+ * notification), so kept plain-text/dependency-light like buildWaLink.
+ */
+export function formatPackageEnquiryMessage(payload: {
+  tierName: string;
+  fullName?: string;
+  whatsappNumber?: string;
+  events: Array<{ date: string; timing: string; city: string }>;
+  packageUrl: string;
+}): string {
+  const lines: string[] = [];
+  lines.push(`Hi Couple Artistry! I'm interested in the ${payload.tierName} package.`);
+  lines.push("");
+  if (payload.fullName) lines.push(`Name: ${payload.fullName}`);
+  if (payload.whatsappNumber) lines.push(`WhatsApp: ${payload.whatsappNumber}`);
+  if (payload.events.length > 0) {
+    lines.push("");
+    lines.push(`Event(s) (${payload.events.length}):`);
+    payload.events.forEach((event, index) => {
+      lines.push(`  ${index + 1}. ${event.date} at ${formatDisplayTime(event.timing)} — ${event.city}`);
+    });
+  }
+  lines.push("");
+  lines.push(`Package details: ${payload.packageUrl}`);
+
+  return lines.join("\n");
+}
+
+/**
  * Builds a single professionally-formatted WhatsApp message summarizing an
  * inquiry, for the "Continue on WhatsApp" deep link. Server-side only
  * (called from the /api/inquiries route) — the destination number itself

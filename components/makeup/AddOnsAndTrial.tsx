@@ -31,8 +31,8 @@ export function AddOnsAndTrial() {
             ))}
           </motion.div>
 
-          <motion.div {...scrollFadeUpProps} className="border border-charcoal/10 bg-ivory-dark p-8">
-            <h3 className="font-display text-xl text-charcoal">{BRIDAL_TRIAL.label}</h3>
+          <motion.div {...scrollFadeUpProps} className="border border-charcoal/10 bg-ivory-dark p-8 shadow-soft">
+            <h3 className="font-display text-xl font-semibold text-charcoal">{BRIDAL_TRIAL.label}</h3>
             <p className="mt-2 text-sm font-medium text-rose-dark">{BRIDAL_TRIAL.priceLabel}</p>
             <ul className="mt-6 space-y-3">
               {BRIDAL_TRIAL.notes.map((note) => (

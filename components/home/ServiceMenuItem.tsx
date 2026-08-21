@@ -26,7 +26,7 @@ export function ServiceMenuItem({ card, index }: ServiceMenuItemProps) {
           {number}
         </span>
         <div>
-          <h3 className="relative inline-block font-display text-2xl leading-tight text-charcoal transition-colors duration-500 group-hover:text-wine sm:text-3xl md:text-4xl">
+          <h3 className="relative inline-block font-display text-2xl font-semibold leading-tight text-charcoal transition-colors duration-500 group-hover:text-wine sm:text-3xl md:text-4xl">
             {card.title}
             <span className="absolute -bottom-1 left-0 h-px w-full origin-left scale-x-0 bg-wine transition-transform duration-500 ease-out group-hover:scale-x-100" />
           </h3>

@@ -146,8 +146,8 @@ export function InquiryForm({
 
   if (result) {
     return (
-      <motion.div {...scrollFadeUpProps} className="mx-auto max-w-lg border border-charcoal/10 bg-ivory p-10 text-center">
-        <h3 className="font-display text-2xl text-charcoal">Thank You</h3>
+      <motion.div {...scrollFadeUpProps} className="mx-auto max-w-lg border border-charcoal/10 bg-ivory p-10 text-center shadow-soft">
+        <h3 className="font-display text-2xl font-semibold text-charcoal">Thank You</h3>
         <p className="mt-3 text-sm leading-relaxed text-charcoal-light">
           Your inquiry has been received. For the fastest response, continue the conversation on WhatsApp.
         </p>
@@ -165,7 +165,7 @@ export function InquiryForm({
       className="mx-auto max-w-lg space-y-6"
       noValidate
     >
-      <h3 className="font-display text-2xl text-charcoal">{heading}</h3>
+      <h3 className="font-display text-2xl font-semibold text-charcoal">{heading}</h3>
 
       <FormField label="Full Name" error={errors.fullName?.message}>
         <input
@@ -211,7 +211,7 @@ const inputClass =
 function FormField({ label, error, children }: { label: string; error?: string; children: React.ReactNode }) {
   return (
     <label className="block">
-      <span className="mb-2 block text-xs uppercase tracking-[0.15em] text-charcoal-light">{label}</span>
+      <span className="mb-2 block text-xs font-bold uppercase tracking-[0.15em] text-charcoal-light">{label}</span>
       {children}
       {error && <span className="mt-1 block text-xs text-wine">{error}</span>}
     </label>

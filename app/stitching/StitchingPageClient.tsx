@@ -52,7 +52,7 @@ export default function StitchingPageClient() {
 
       <PackageGrid categoryKey="stitching" title="Starting Prices" />
 
-      <ScrollFadeSection className="px-6 py-24 md:py-32">
+      <ScrollFadeSection disableFade className="px-6 py-24 md:py-32">
         <div className="mx-auto max-w-content">
           <SectionHeading eyebrow="Get In Touch" title="Send an Inquiry" />
           <div className="mt-14">

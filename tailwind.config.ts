@@ -37,6 +37,13 @@ const config: Config = {
       maxWidth: {
         content: "88rem",
       },
+      // Warm, wine-tinted shadows rather than generic black/gray — gives
+      // cards and buttons real lift without reading as a default UI-kit
+      // shadow. "soft" for resting state, "lift" for hover.
+      boxShadow: {
+        soft: "0 1px 2px rgba(42,38,34,0.05), 0 10px 28px -12px rgba(93,26,40,0.18)",
+        lift: "0 2px 8px rgba(42,38,34,0.08), 0 20px 44px -16px rgba(93,26,40,0.30)",
+      },
     },
   },
   plugins: [],

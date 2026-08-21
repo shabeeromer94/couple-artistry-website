@@ -25,6 +25,10 @@ export function AvailabilityForm({ onResult }: AvailabilityFormProps) {
   const journey = useJourney();
   const [fullName, setFullName] = useState(journey.contact?.fullName ?? "");
   const [whatsappNumber, setWhatsappNumber] = useState(journey.contact?.whatsappNumber ?? "");
+  // "I'm not sure yet" skips the event fields and the calendar check
+  // entirely — only name/number are needed, and she goes straight to
+  // packages (see AvailabilityResult's "not_checked" handling).
+  const [notSure, setNotSure] = useState(false);
   const [countChoice, setCountChoice] = useState<EventCountChoice | null>(null);
   const [events, setEvents] = useState<JourneyEvent[]>([]);
   const [submitting, setSubmitting] = useState(false);
@@ -49,15 +53,21 @@ export function AvailabilityForm({ onResult }: AvailabilityFormProps) {
     setEvents((prev) => prev.filter((_, i) => i !== index));
   }
 
-  const isValid =
-    fullName.trim().length > 1 &&
-    whatsappNumber.trim().length > 0 &&
-    events.length > 0 &&
-    events.every((e) => e.date && e.timing && e.city.trim());
+  const hasContact = fullName.trim().length > 1 && whatsappNumber.trim().length > 0;
+  const isValid = notSure
+    ? hasContact
+    : hasContact && events.length > 0 && events.every((e) => e.date && e.timing && e.city.trim());
+  // Nothing to submit toward until either she's said "not sure," or picked
+  // an event count and started filling it in.
+  const canSubmit = notSure || events.length > 0;
 
   async function handleSubmit() {
     if (!isValid) {
-      setError("Please enter your name and WhatsApp number, and complete every field for each event.");
+      setError(
+        notSure
+          ? "Please enter your name and WhatsApp number."
+          : "Please enter your name and WhatsApp number, and complete every field for each event."
+      );
       return;
     }
     setError(null);
@@ -66,14 +76,20 @@ export function AvailabilityForm({ onResult }: AvailabilityFormProps) {
       const res = await fetch("/api/availability/check", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ fullName, whatsappNumber, events, utm: journey.utm }),
+        body: JSON.stringify({
+          fullName,
+          whatsappNumber,
+          notSure,
+          events: notSure ? [] : events,
+          utm: journey.utm,
+        }),
       });
       const data: AvailabilityCheckResponse | { success: false; error: string } = await res.json();
       if (!data.success) {
         setError(data.error ?? "Something went wrong. Please try again.");
         return;
       }
-      journey.setEvents(events);
+      journey.setEvents(notSure ? [] : events);
       journey.setContact({ fullName, whatsappNumber });
       journey.setAvailabilityResult(data);
       onResult();
@@ -88,7 +104,9 @@ export function AvailabilityForm({ onResult }: AvailabilityFormProps) {
     <motion.div {...scrollFadeUpProps} className="mx-auto max-w-2xl space-y-10">
       <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
         <label className="block">
-          <span className="mb-2 block text-xs uppercase tracking-[0.15em] text-charcoal-light">Your Name</span>
+          <span className="mb-2 block text-xs font-bold uppercase tracking-[0.15em] text-charcoal-light">
+            Your Name
+          </span>
           <input
             type="text"
             value={fullName}
@@ -98,7 +116,9 @@ export function AvailabilityForm({ onResult }: AvailabilityFormProps) {
           />
         </label>
         <label className="block">
-          <span className="mb-2 block text-xs uppercase tracking-[0.15em] text-charcoal-light">WhatsApp Number</span>
+          <span className="mb-2 block text-xs font-bold uppercase tracking-[0.15em] text-charcoal-light">
+            WhatsApp Number
+          </span>
           <input
             type="tel"
             value={whatsappNumber}
@@ -110,14 +130,29 @@ export function AvailabilityForm({ onResult }: AvailabilityFormProps) {
         </label>
       </div>
 
-      <div>
-        <p className="mb-4 text-center text-xs uppercase tracking-[0.2em] text-charcoal-light">
-          How many events?
-        </p>
-        <EventCountPicker value={countChoice} onChange={handleCountChoice} />
-      </div>
+      <label className="flex cursor-pointer items-start gap-3 border border-charcoal/15 bg-ivory-dark/50 px-5 py-4 transition-colors hover:border-wine/40">
+        <input
+          type="checkbox"
+          checked={notSure}
+          onChange={(e) => setNotSure(e.target.checked)}
+          className="mt-0.5 h-4 w-4 shrink-0 accent-wine"
+        />
+        <span className="text-sm text-charcoal">
+          I&rsquo;m not sure of my event details yet — just take my name &amp; number for now, and let me look
+          at packages.
+        </span>
+      </label>
 
-      {events.length > 0 && (
+      {!notSure && (
+        <div>
+          <p className="mb-4 text-center text-xs font-bold uppercase tracking-[0.2em] text-charcoal-light">
+            How many events?
+          </p>
+          <EventCountPicker value={countChoice} onChange={handleCountChoice} />
+        </div>
+      )}
+
+      {!notSure && events.length > 0 && (
         <div className="space-y-6">
           {events.map((event, index) => (
             <EventFieldset
@@ -133,19 +168,23 @@ export function AvailabilityForm({ onResult }: AvailabilityFormProps) {
             <button
               type="button"
               onClick={addEvent}
-              className="text-xs uppercase tracking-[0.2em] text-rose-dark hover:text-wine"
+              className="text-xs font-bold uppercase tracking-[0.2em] text-rose-dark hover:text-wine"
             >
               + Add Another Event
             </button>
           )}
+        </div>
+      )}
 
+      {canSubmit && (
+        <div className="space-y-6">
           <AvailabilityDisclaimer />
 
           {error && <p className="text-center text-sm text-wine">{error}</p>}
 
           <div className="text-center">
             <Button onClick={handleSubmit} disabled={submitting} size="lg">
-              {submitting ? "Checking…" : "Check Availability"}
+              {submitting ? "Checking…" : notSure ? "Continue" : "Check Availability"}
             </Button>
           </div>
         </div>

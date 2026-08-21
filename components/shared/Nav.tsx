@@ -70,15 +70,17 @@ export function Nav() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
           className={cn(
-            "sticky top-0 z-40 border-b transition-colors duration-500",
-            overlay ? "border-transparent bg-transparent" : "border-charcoal/10 bg-ivory/90 backdrop-blur"
+            "sticky top-0 z-40 border-b transition-[background-color,border-color,box-shadow] duration-500",
+            overlay
+              ? "border-transparent bg-transparent"
+              : "border-charcoal/10 bg-ivory/90 shadow-soft backdrop-blur"
           )}
         >
           <div className="mx-auto flex h-24 max-w-content items-center justify-between px-6">
             <Link href="/" className="leading-none">
               <span
                 className={cn(
-                  "block font-display text-2xl tracking-wide transition-colors duration-500 sm:text-3xl",
+                  "block font-display text-2xl font-semibold tracking-wide transition-colors duration-500 sm:text-3xl",
                   overlay ? cn("text-ivory", overlayShadow) : "text-charcoal"
                 )}
               >
@@ -86,15 +88,15 @@ export function Nav() {
               </span>
               <span
                 className={cn(
-                  "mt-1 block text-xs uppercase tracking-[0.2em] transition-colors duration-500",
-                  overlay ? cn("text-ivory/75", overlayShadow) : "text-charcoal-light"
+                  "mt-1 block text-xs font-bold uppercase tracking-[0.25em] transition-colors duration-500",
+                  overlay ? cn("text-ivory/75", overlayShadow) : "text-rose-dark"
                 )}
               >
                 by Shaash
               </span>
             </Link>
 
-            <nav className="hidden gap-8 md:flex">
+            <nav className="hidden gap-8 lg:gap-10 md:flex">
               {NAV_LINKS.map((link) =>
                 link.external ? (
                   <a
@@ -103,7 +105,7 @@ export function Nav() {
                     target="_blank"
                     rel="noopener noreferrer"
                     className={cn(
-                      "text-xs font-medium uppercase tracking-[0.15em] transition-colors duration-500",
+                      "text-sm font-bold uppercase tracking-[0.06em] transition-colors duration-500",
                       overlay
                         ? cn("text-ivory/85 hover:text-ivory", overlayShadow)
                         : "text-charcoal-light hover:text-wine"
@@ -116,7 +118,7 @@ export function Nav() {
                     key={link.href}
                     href={link.href}
                     className={cn(
-                      "text-xs font-medium uppercase tracking-[0.15em] transition-colors duration-500",
+                      "text-sm font-bold uppercase tracking-[0.06em] transition-colors duration-500",
                       overlay
                         ? cn("text-ivory/85 hover:text-ivory", overlayShadow)
                         : "text-charcoal-light hover:text-wine"
@@ -132,7 +134,7 @@ export function Nav() {
               type="button"
               onClick={() => setMenuOpen((v) => !v)}
               className={cn(
-                "text-xs font-medium uppercase tracking-[0.15em] transition-colors duration-500 md:hidden",
+                "text-sm font-bold uppercase tracking-[0.1em] transition-colors duration-500 md:hidden",
                 overlay ? cn("text-ivory", overlayShadow) : "text-charcoal"
               )}
               aria-expanded={menuOpen}
@@ -160,7 +162,7 @@ export function Nav() {
                         target="_blank"
                         rel="noopener noreferrer"
                         onClick={() => setMenuOpen(false)}
-                        className="py-3 text-sm font-medium uppercase tracking-[0.15em] text-charcoal-light"
+                        className="py-3 text-base font-bold uppercase tracking-[0.08em] text-charcoal transition-colors hover:text-wine"
                       >
                         {link.label}
                       </a>
@@ -169,7 +171,7 @@ export function Nav() {
                         key={link.href}
                         href={link.href}
                         onClick={() => setMenuOpen(false)}
-                        className="py-3 text-sm font-medium uppercase tracking-[0.15em] text-charcoal-light"
+                        className="py-3 text-base font-bold uppercase tracking-[0.08em] text-charcoal transition-colors hover:text-wine"
                       >
                         {link.label}
                       </Link>

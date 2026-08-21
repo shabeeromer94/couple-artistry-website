@@ -13,8 +13,10 @@ interface BaseProps {
 }
 
 const VARIANT_CLASSES: Record<Variant, string> = {
-  primary: "bg-wine text-ivory hover:bg-wine-dark border border-wine",
-  secondary: "bg-transparent text-charcoal border border-charcoal/40 hover:border-charcoal",
+  primary:
+    "bg-gradient-to-b from-wine to-wine-dark text-ivory border border-wine shadow-soft hover:shadow-lift hover:-translate-y-0.5 hover:brightness-110",
+  secondary:
+    "bg-transparent text-charcoal border border-charcoal/40 hover:border-wine hover:text-wine hover:shadow-soft",
   ghost: "bg-transparent text-charcoal hover:text-wine",
 };
 
@@ -24,7 +26,7 @@ const SIZE_CLASSES: Record<Size, string> = {
 };
 
 const BASE_CLASSES =
-  "inline-flex items-center justify-center gap-2 uppercase tracking-[0.15em] font-medium transition-colors duration-300 disabled:opacity-40 disabled:pointer-events-none";
+  "inline-flex items-center justify-center gap-2 uppercase tracking-[0.15em] font-bold transition-all duration-300 disabled:opacity-40 disabled:pointer-events-none disabled:translate-y-0 disabled:shadow-none";
 
 interface ButtonAsButton extends BaseProps {
   href?: undefined;

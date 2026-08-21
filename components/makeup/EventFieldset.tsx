@@ -11,7 +11,7 @@ interface EventFieldsetProps {
 
 const fieldClass =
   "w-full border-b border-charcoal/25 bg-transparent py-2 text-sm text-charcoal placeholder:text-charcoal-light/50 focus:border-wine focus:outline-none";
-const labelClass = "mb-2 block text-xs uppercase tracking-[0.15em] text-charcoal-light";
+const labelClass = "mb-2 block text-xs font-bold uppercase tracking-[0.15em] text-charcoal-light";
 
 export function EventFieldset({ index, value, onChange, onRemove }: EventFieldsetProps) {
   function set<K extends keyof JourneyEvent>(key: K, next: JourneyEvent[K]) {

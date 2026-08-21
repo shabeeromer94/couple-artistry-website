@@ -18,6 +18,8 @@ interface AvailabilityNotificationEvent {
 export function formatAvailabilityNotification(payload: {
   fullName: string;
   whatsappNumber: string;
+  /** True when she marked "not sure of my event details yet" — events is empty and no calendar check ran. */
+  notSure?: boolean;
   events: AvailabilityNotificationEvent[];
   overallStatus: string;
   packagesUrl: string;
@@ -28,14 +30,18 @@ export function formatAvailabilityNotification(payload: {
   lines.push(`Name: ${payload.fullName}`);
   lines.push(`WhatsApp: ${payload.whatsappNumber}`);
   lines.push("");
-  lines.push(`Event(s) (${payload.events.length}):`);
-  payload.events.forEach((event, index) => {
-    lines.push(
-      `  ${index + 1}. ${event.date} — starts ${formatDisplayTime(event.timing)} — ${event.city} — ${event.status}`
-    );
-  });
-  lines.push("");
-  lines.push(`Overall: ${payload.overallStatus}`);
+  if (payload.notSure) {
+    lines.push("Not sure of her event details yet — no calendar check run. Went straight to packages.");
+  } else {
+    lines.push(`Event(s) (${payload.events.length}):`);
+    payload.events.forEach((event, index) => {
+      lines.push(
+        `  ${index + 1}. ${event.date} — starts ${formatDisplayTime(event.timing)} — ${event.city} — ${event.status}`
+      );
+    });
+    lines.push("");
+    lines.push(`Overall: ${payload.overallStatus}`);
+  }
   lines.push("");
   lines.push(`Packages: ${payload.packagesUrl}`);
 

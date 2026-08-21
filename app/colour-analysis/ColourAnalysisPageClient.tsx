@@ -69,7 +69,7 @@ export default function ColourAnalysisPageClient() {
 
       <PackageGrid categoryKey="colour-analysis" />
 
-      <ScrollFadeSection className="px-6 py-24 md:py-32">
+      <ScrollFadeSection disableFade className="px-6 py-24 md:py-32">
         <div className="mx-auto max-w-content">
           <SectionHeading eyebrow="Book a Slot" title="Choose a Time (11 AM – 5 PM)" />
           <div className="mt-14">
@@ -82,7 +82,7 @@ export default function ColourAnalysisPageClient() {
         </div>
       </ScrollFadeSection>
 
-      <ScrollFadeSection ref={inquiryRef} className="scroll-mt-24 px-6 py-24 md:py-32">
+      <ScrollFadeSection disableFade ref={inquiryRef} className="scroll-mt-24 px-6 py-24 md:py-32">
         <div className="mx-auto max-w-content">
           <SectionHeading eyebrow="Get In Touch" title="Send an Inquiry" />
           <div className="mt-14">

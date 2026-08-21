@@ -32,11 +32,11 @@ export function Testimonial({ testimonial, index = 0 }: TestimonialProps) {
       transition={{ duration: 1, ease: EASE_EDITORIAL, delay: index * 0.15 }}
       className={cn("relative", index % 2 === 1 && "md:mt-10")}
     >
-      <figure className={cn("relative rounded-[28px] p-7", tint)}>
+      <figure className={cn("relative rounded-[28px] p-7 shadow-soft", tint)}>
         <blockquote className="font-display text-lg leading-relaxed text-charcoal">
           &ldquo;{testimonial.quote}&rdquo;
         </blockquote>
-        <figcaption className="mt-6 text-xs uppercase tracking-[0.15em] text-charcoal-light">
+        <figcaption className="mt-6 text-xs font-bold uppercase tracking-[0.15em] text-charcoal-light">
           {testimonial.authorName}
           {testimonial.rating && (
             <span className="ml-2 text-rose" aria-label={`${testimonial.rating} out of 5`}>

@@ -9,7 +9,9 @@ export interface JourneyEvent {
 }
 
 export type AvailabilityStatus = "available" | "unavailable";
-export type OverallAvailabilityStatus = "available" | "unavailable" | "partial";
+// "not_checked" — no calendar lookup ran at all, because she marked
+// "not sure of my event details yet" on the form (see AvailabilityForm).
+export type OverallAvailabilityStatus = "available" | "unavailable" | "partial" | "not_checked";
 
 export interface AvailabilityCheckResult {
   success: true;

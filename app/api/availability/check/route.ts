@@ -6,7 +6,7 @@ import { isSupabaseConfigured, env } from "@/lib/config/env";
 import { AVAILABILITY_DISCLAIMER } from "@/lib/config/copy";
 import { formatAvailabilityNotification } from "@/lib/utils/notifications";
 import { sendOwnerNotification } from "@/lib/ownerNotify/telegram";
-import type { OverallAvailabilityStatus } from "@/types/journey";
+import type { AvailabilityStatus, OverallAvailabilityStatus } from "@/types/journey";
 
 // STUB CONTRACT: this route never touches a real calendar. It exists so the
 // frontend can be built once against a stable JSON contract, and the body
@@ -31,19 +31,29 @@ export async function POST(request: Request) {
   }
 
   try {
-    const { fullName, whatsappNumber, events, sessionId, utm } = parsed.data;
+    const { fullName, whatsappNumber, notSure, events, sessionId, utm } = parsed.data;
 
-    const results = await Promise.all(
-      events.map(async (event) => ({
-        id: event.id,
-        date: event.date,
-        status: await checkEventAvailability(event),
-      }))
-    );
+    // "Not sure of my event details yet" skips the calendar entirely — no
+    // dates were given to check, so there's nothing to look up. She goes
+    // straight to packages instead (see AvailabilityResult's "not_checked"
+    // handling).
+    let results: Array<{ id: string; date: string; status: AvailabilityStatus }> = [];
+    let overallStatus: OverallAvailabilityStatus;
 
-    const availableCount = results.filter((r) => r.status === "available").length;
-    const overallStatus: OverallAvailabilityStatus =
-      availableCount === results.length ? "available" : availableCount === 0 ? "unavailable" : "partial";
+    if (notSure) {
+      overallStatus = "not_checked";
+    } else {
+      results = await Promise.all(
+        events.map(async (event) => ({
+          id: event.id,
+          date: event.date,
+          status: await checkEventAvailability(event),
+        }))
+      );
+      const availableCount = results.filter((r) => r.status === "available").length;
+      overallStatus =
+        availableCount === results.length ? "available" : availableCount === 0 ? "unavailable" : "partial";
+    }
 
     const checkedAt = new Date().toISOString();
     const checkId = globalThis.crypto.randomUUID();
@@ -80,11 +90,12 @@ export async function POST(request: Request) {
       const message = formatAvailabilityNotification({
         fullName,
         whatsappNumber,
+        notSure,
         events: events.map((event, index) => ({
           date: event.date,
           timing: event.timing,
           city: event.city,
-          status: results[index].status,
+          status: results[index]?.status ?? "available",
         })),
         overallStatus,
         packagesUrl: `${env.siteUrl}/makeup?unlock=packages`,

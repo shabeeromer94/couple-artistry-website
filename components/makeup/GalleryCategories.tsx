@@ -33,7 +33,7 @@ export function GalleryCategories() {
               aria-expanded={isOpen}
               className={`flex w-full items-center justify-between gap-6 px-6 py-8 text-left transition-colors duration-500 sm:px-10 sm:py-10 ${BAND_TINTS[index % BAND_TINTS.length]}`}
             >
-              <span className="font-display text-2xl uppercase tracking-[0.08em] text-charcoal sm:text-4xl">
+              <span className="font-display text-2xl font-semibold uppercase tracking-[0.08em] text-charcoal sm:text-4xl">
                 {group.label}
               </span>
               <span className="flex shrink-0 items-center gap-4">

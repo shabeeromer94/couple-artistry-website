@@ -10,6 +10,7 @@ export interface AvailabilityCheckRequestEvent {
 export interface AvailabilityCheckRequest {
   fullName: string;
   whatsappNumber: string;
+  notSure?: boolean;
   events: AvailabilityCheckRequestEvent[];
   sessionId?: string;
   utm?: Record<string, string | undefined>;

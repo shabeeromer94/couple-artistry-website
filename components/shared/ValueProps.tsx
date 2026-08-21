@@ -29,8 +29,8 @@ export function ValueProps({ items, columns = 4 }: ValuePropsProps) {
     >
       {items.map((item) => (
         <motion.div key={item.title} variants={scrollFadeUpProps.variants} className="text-left">
-          <div className="mb-4 h-px w-10 bg-rose" />
-          <h3 className="font-display text-xl text-charcoal">{item.title}</h3>
+          <div className="mb-4 h-1 w-10 rounded-full bg-rose" />
+          <h3 className="font-display text-xl font-semibold text-charcoal">{item.title}</h3>
           <p className="mt-2 text-sm leading-relaxed text-charcoal-light">{item.description}</p>
         </motion.div>
       ))}

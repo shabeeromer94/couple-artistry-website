@@ -33,7 +33,7 @@ export default function ClassesPageClient() {
         </motion.p>
       </ScrollFadeSection>
 
-      <ScrollFadeSection className="px-6 py-16 md:py-24">
+      <ScrollFadeSection disableFade className="px-6 py-16 md:py-24">
         <div className="mx-auto max-w-content">
           {!showInquiry ? (
             <LearningPathPicker

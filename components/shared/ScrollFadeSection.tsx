@@ -7,6 +7,14 @@ import { cn } from "@/lib/utils/cn";
 interface ScrollFadeSectionProps {
   children: React.ReactNode;
   className?: string;
+  /**
+   * Skips the scroll-linked dim/scale entirely — for any section containing
+   * a form or other active input. On mobile, a focused field opening the
+   * keyboard shifts the viewport height, which this effect's scroll-offset
+   * math reads as a partial scroll-out — dimming the very button someone's
+   * mid-type toward. Renders a plain, fully static <section> instead.
+   */
+  disableFade?: boolean;
 }
 
 /**
@@ -19,7 +27,7 @@ interface ScrollFadeSectionProps {
  * forwards its ref straight to the underlying <section> for exactly that.
  */
 export const ScrollFadeSection = forwardRef<HTMLElement, ScrollFadeSectionProps>(function ScrollFadeSection(
-  { children, className },
+  { children, className, disableFade },
   forwardedRef
 ) {
   const localRef = useRef<HTMLElement | null>(null);
@@ -41,7 +49,7 @@ export const ScrollFadeSection = forwardRef<HTMLElement, ScrollFadeSectionProps>
         if (typeof forwardedRef === "function") forwardedRef(node);
         else if (forwardedRef) forwardedRef.current = node;
       }}
-      style={{ opacity, scale }}
+      style={disableFade ? undefined : { opacity, scale }}
       className={cn(className)}
     >
       {children}
